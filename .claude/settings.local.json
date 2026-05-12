@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ssh root@8.136.140.8 \"ufw status 2>&1; iptables -L INPUT --line-numbers 2>&1 | head -10\")",
+      "Bash(ssh root@8.136.140.8 \"ls -la /var/www/html/\")"
+    ]
+  }
+}
