@@ -1,0 +1,208 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>习题册数据标注工作台</title>
+<link rel="stylesheet" href="annotation.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div>
+    <h1>习题册数据标注工作台</h1>
+    <p class="topbar-subtitle">纯前端试运行版：任务分配、本地文件夹读取、模板复用、自动保存</p>
+  </div>
+  <div class="topbar-status">
+    <div class="status-item">
+      <span class="status-label">当前标注员</span>
+      <strong id="current-annotator-name">未选择</strong>
+    </div>
+    <div class="status-item">
+      <span class="status-label">当前任务</span>
+      <strong id="current-task-name">未选择</strong>
+    </div>
+    <div class="status-item">
+      <span class="status-label">自动保存</span>
+      <strong id="save-indicator">未初始化</strong>
+    </div>
+  </div>
+</header>
+
+<main class="app-shell">
+  <aside class="sidebar panel-region active-region" id="sidebar-region" tabindex="0">
+    <div class="panel-zoom-content" id="sidebar-content">
+    <section class="panel-block">
+      <div class="panel-heading">
+        <h2>项目配置</h2>
+      </div>
+      <div class="stack">
+        <p class="muted">默认会加载示例配置。你后续可以导入正式的项目配置 JSON。</p>
+        <div class="button-row">
+          <label class="btn btn-secondary">
+            导入配置 JSON
+            <input type="file" id="config-input" accept=".json" hidden>
+          </label>
+          <button class="btn btn-secondary" id="download-config-template-btn" type="button">下载配置模板</button>
+        </div>
+        <div class="info-card">
+          <div>项目名称：<strong id="project-name">-</strong></div>
+          <div>书本数量：<strong id="book-count">0</strong></div>
+          <div>任务数量：<strong id="task-count">0</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-block">
+      <div class="panel-heading">
+        <h2>标注员</h2>
+      </div>
+      <div class="stack">
+        <select id="annotator-select" class="select-control"></select>
+        <button class="btn btn-primary" id="enter-workbench-btn" type="button">进入我的任务</button>
+      </div>
+    </section>
+
+    <section class="panel-block">
+      <div class="panel-heading">
+        <h2>本地文件夹</h2>
+      </div>
+      <div class="stack">
+        <p class="muted">请选择根目录，例如 <code>data/</code>，目录下应按 <code>书本/副本/0001.png</code> 组织。</p>
+        <label class="btn btn-secondary">
+          选择 data 文件夹
+          <input type="file" id="folder-input" hidden webkitdirectory multiple accept="image/*">
+        </label>
+        <div class="info-card">
+          <div>已读取文件：<strong id="folder-file-count">0</strong></div>
+          <div>目录状态：<strong id="folder-status">未选择</strong></div>
+          <div id="folder-summary" class="muted">请选择整本书所在的根目录。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel-block fill-block">
+      <div class="panel-heading">
+        <h2>我的任务</h2>
+      </div>
+      <div id="task-list" class="task-list">
+        <div class="empty-hint">先选择标注员，然后这里会显示分配给他的任务。</div>
+      </div>
+    </section>
+    </div>
+  </aside>
+
+  <section class="workspace-shell">
+    <div class="workspace-toolbar">
+      <div class="workspace-summary">
+        <div><span class="status-label">书本</span><strong id="workspace-book-name">-</strong></div>
+        <div><span class="status-label">副本</span><strong id="workspace-copy-name">-</strong></div>
+        <div><span class="status-label">页码</span><strong id="workspace-page-label">-</strong></div>
+        <div><span class="status-label">模式</span><strong id="workspace-mode-label">-</strong></div>
+      </div>
+      <div class="button-row">
+        <button class="btn btn-secondary" id="prev-unit-btn" type="button">上一个单元</button>
+        <button class="btn btn-secondary" id="next-unit-btn" type="button">下一个单元</button>
+        <button class="btn btn-success" id="mark-complete-btn" type="button">标记本页完成</button>
+      </div>
+    </div>
+
+    <div id="workspace-empty" class="workspace-empty">
+      <h2>准备开始</h2>
+      <p>从左侧选择标注员和任务，再选择本地 <code>data</code> 文件夹，系统会自动定位当前任务需要的页图。</p>
+    </div>
+
+    <div id="workspace-content" class="workspace-content hidden">
+      <div class="image-stage panel-region" id="image-region" tabindex="0">
+        <div class="panel-zoom-content" id="image-content">
+        <div class="image-stage-header">
+          <div class="image-meta">
+            <div>图片文件：<strong id="current-filename">未加载</strong></div>
+            <div>原图尺寸：<strong id="info-size">-</strong></div>
+            <div>模板状态：<strong id="template-status-text">-</strong></div>
+          </div>
+          <div id="template-offset-controls" class="offset-controls hidden">
+            <span class="offset-label">模板微调</span>
+            <label>X <input type="number" id="offset-x-input" value="0" step="1"></label>
+            <label>Y <input type="number" id="offset-y-input" value="0" step="1"></label>
+          </div>
+        </div>
+
+        <div class="image-panel" id="image-panel">
+          <div class="image-zoom-stage" id="image-zoom-stage">
+            <div id="image-placeholder" class="image-placeholder">
+              当前任务页图未找到。请确认已选择根目录，且文件路径符合 <code>书本/副本/0001.png</code>。
+            </div>
+            <div class="image-container hidden" id="image-container">
+              <img id="main-image" src="" alt="标注图片">
+              <div id="drawing-box"></div>
+              <div id="phase-hint" class="phase-hint hidden">请框选 <span id="phase-hint-text"></span> 区域</div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <aside class="detail-panel panel-region" id="detail-region" tabindex="0">
+        <section class="detail-section fixed-toolbar-section">
+          <h3>模板操作</h3>
+          <div class="info-card compact">
+            <div id="template-help-text">-</div>
+          </div>
+          <div class="button-row">
+            <button class="btn btn-secondary" id="redraw-template-btn" type="button">重做整页模板</button>
+            <button class="btn btn-danger" id="redraw-current-page-btn" type="button">仅重标当前页</button>
+          </div>
+          <div class="type-btns" id="question-type-buttons">
+            <button class="type-btn active" data-type="single" type="button">单选题</button>
+            <button class="type-btn" data-type="multiple" type="button">多选题</button>
+            <button class="type-btn" data-type="fill" type="button">填空题</button>
+            <button class="type-btn" data-type="qa" type="button">问答题</button>
+          </div>
+        </section>
+        <div class="detail-scroll">
+          <div class="panel-zoom-content" id="detail-content">
+        <section class="detail-section">
+          <h3>任务进度</h3>
+          <div class="info-card">
+            <div>任务范围：<strong id="task-range-text">-</strong></div>
+            <div>当前单元：<strong id="unit-order-text">-</strong></div>
+            <div>完成进度：<strong id="task-progress-text">-</strong></div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" id="task-progress-fill" style="width:0%"></div></div>
+        </section>
+
+        <section class="detail-section">
+          <h3>页状态</h3>
+          <div class="status-btns" id="page-status-buttons"></div>
+        </section>
+
+        <section class="detail-section grow-section">
+          <h3>题目列表</h3>
+          <div id="annotations-list" class="annotations-list">
+            <div class="empty-hint">当前页还没有题目，请先新增题目或加载已有模板。</div>
+          </div>
+        </section>
+
+        <section class="detail-section">
+          <h3>导出结果</h3>
+          <div class="button-row">
+            <button class="btn btn-success" id="export-task-json-btn" type="button">导出任务 JSON</button>
+            <button class="btn btn-success" id="export-template-jsonl-btn" type="button">导出模板 JSONL</button>
+            <button class="btn btn-success" id="export-attempt-jsonl-btn" type="button">导出作答 JSONL</button>
+          </div>
+        </section>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<script src="js/state.js"></script>
+<script src="js/workbench.js"></script>
+<script src="js/render.js"></script>
+<script src="js/drawing.js"></script>
+<script src="annotation.js"></script>
+</body>
+</html>

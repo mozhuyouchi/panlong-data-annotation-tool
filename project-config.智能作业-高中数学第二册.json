@@ -1,0 +1,89 @@
+{
+  "projectName": "智能作业-高中数学第二册 试运行标注项目",
+  "annotators": [
+    { "id": "001", "label": "标注员001" },
+    { "id": "002", "label": "标注员002" },
+    { "id": "003", "label": "标注员003" }
+  ],
+  "books": [
+    {
+      "id": "math_g2_book_01",
+      "label": "智能作业-高中数学第二册",
+      "folderName": "智能作业-高中数学第二册",
+      "pageCount": 162,
+      "pageDigits": 4,
+      "imageExt": "png",
+      "templateCopyId": "李悠然",
+      "copies": [
+        { "id": "凌尧谦", "label": "凌尧谦", "folderName": "凌尧谦", "pageCount": 142 },
+        { "id": "李悠然", "label": "李悠然", "folderName": "李悠然", "pageCount": 154 },
+        { "id": "黄彦钧", "label": "黄彦钧", "folderName": "黄彦钧", "pageCount": 162 }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "task_math_g2_0001_0020",
+      "title": "智能作业-高中数学第二册 第1-20页",
+      "annotatorId": "001",
+      "bookId": "math_g2_book_01",
+      "pageStart": 1,
+      "pageEnd": 20,
+      "copyIds": ["凌尧谦", "李悠然", "黄彦钧"]
+    },
+    {
+      "id": "task_math_g2_0021_0040",
+      "title": "智能作业-高中数学第二册 第21-40页",
+      "annotatorId": "002",
+      "bookId": "math_g2_book_01",
+      "pageStart": 21,
+      "pageEnd": 40,
+      "copyIds": ["凌尧谦", "李悠然", "黄彦钧"]
+    },
+    {
+      "id": "task_math_g2_0041_0060",
+      "title": "智能作业-高中数学第二册 第41-60页",
+      "annotatorId": "003",
+      "bookId": "math_g2_book_01",
+      "pageStart": 41,
+      "pageEnd": 60,
+      "copyIds": ["凌尧谦", "李悠然", "黄彦钧"]
+    },
+    {
+      "id": "task_math_g2_0061_0080",
+      "title": "智能作业-高中数学第二册 第61-80页",
+      "annotatorId": "001",
+      "bookId": "math_g2_book_01",
+      "pageStart": 61,
+      "pageEnd": 80,
+      "copyIds": ["凌尧谦", "李悠然", "黄彦钧"]
+    },
+    {
+      "id": "task_math_g2_0081_0100",
+      "title": "智能作业-高中数学第二册 第81-100页",
+      "annotatorId": "002",
+      "bookId": "math_g2_book_01",
+      "pageStart": 81,
+      "pageEnd": 100,
+      "copyIds": ["凌尧谦", "李悠然", "黄彦钧"]
+    },
+    {
+      "id": "task_math_g2_0101_0120",
+      "title": "智能作业-高中数学第二册 第101-120页",
+      "annotatorId": "003",
+      "bookId": "math_g2_book_01",
+      "pageStart": 101,
+      "pageEnd": 120,
+      "copyIds": ["凌尧谦", "李悠然", "黄彦钧"]
+    },
+    {
+      "id": "task_math_g2_0121_0142",
+      "title": "智能作业-高中数学第二册 第121-142页",
+      "annotatorId": "001",
+      "bookId": "math_g2_book_01",
+      "pageStart": 121,
+      "pageEnd": 142,
+      "copyIds": ["凌尧谦", "李悠然", "黄彦钧"]
+    }
+  ]
+}
