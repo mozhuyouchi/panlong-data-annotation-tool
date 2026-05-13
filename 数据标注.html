@@ -99,6 +99,14 @@
         <div><span class="status-label">副本</span><strong id="workspace-copy-name">-</strong></div>
         <div><span class="status-label">页码</span><strong id="workspace-page-label">-</strong></div>
         <div><span class="status-label">模式</span><strong id="workspace-mode-label">-</strong></div>
+        <div class="workspace-progress">
+          <div class="workspace-progress-row">
+            <span><span class="status-label">任务范围</span><strong id="task-range-text">-</strong></span>
+            <span><span class="status-label">当前单元</span><strong id="unit-order-text">-</strong></span>
+            <span><span class="status-label">完成进度</span><strong id="task-progress-text">-</strong></span>
+          </div>
+          <div class="progress-bar toolbar-progress"><div class="progress-fill" id="task-progress-fill" style="width:0%"></div></div>
+        </div>
       </div>
       <div class="button-row">
         <button class="btn btn-secondary" id="prev-unit-btn" type="button">上一个单元</button>
@@ -149,27 +157,35 @@
           <div class="info-card compact">
             <div id="template-help-text">-</div>
           </div>
-          <div class="button-row">
-            <button class="btn btn-secondary" id="redraw-template-btn" type="button">重做整页模板</button>
-            <button class="btn btn-danger" id="redraw-current-page-btn" type="button">仅重标当前页</button>
-          </div>
+          <div class="toolbar-subtitle">新标注题型</div>
           <div class="type-btns" id="question-type-buttons">
             <button class="type-btn active" data-type="single" type="button">单选题</button>
             <button class="type-btn" data-type="multiple" type="button">多选题</button>
             <button class="type-btn" data-type="fill" type="button">填空题</button>
             <button class="type-btn" data-type="qa" type="button">问答题</button>
           </div>
+          <div class="template-action-row">
+            <button class="btn btn-secondary btn-quiet" id="redraw-template-btn" type="button">重做整页模板</button>
+            <button class="btn btn-danger btn-quiet-danger" id="redraw-current-page-btn" type="button">仅重标当前页</button>
+          </div>
         </section>
         <div class="detail-scroll">
           <div class="panel-zoom-content" id="detail-content">
-        <section class="detail-section">
-          <h3>任务进度</h3>
-          <div class="info-card">
-            <div>任务范围：<strong id="task-range-text">-</strong></div>
-            <div>当前单元：<strong id="unit-order-text">-</strong></div>
-            <div>完成进度：<strong id="task-progress-text">-</strong></div>
+        <section class="detail-section" id="page-map-section">
+          <h3>页码对齐</h3>
+          <div class="info-card compact">
+            <div>逻辑页：<strong id="page-map-logical">-</strong></div>
+            <div>当前副本：<strong id="page-map-copy">-</strong></div>
+            <div>当前扫描图：<strong id="page-map-image">-</strong></div>
           </div>
-          <div class="progress-bar"><div class="progress-fill" id="task-progress-fill" style="width:0%"></div></div>
+          <label class="field-label" for="page-map-input">当前扫描图实际对应逻辑页</label>
+          <input class="compact-input" id="page-map-input" type="number" min="1" step="1" placeholder="例如 6">
+          <div class="button-row page-map-actions">
+            <button class="btn btn-secondary" id="apply-page-map-btn" type="button">确认并重排后续页</button>
+            <button class="btn btn-secondary" id="mark-page-missing-btn" type="button">当前逻辑页缺失</button>
+            <button class="btn btn-danger btn-quiet-danger" id="skip-logical-page-btn" type="button">当前扫描图无效</button>
+          </div>
+          <p class="micro-copy">缺失会把当前图顺延给下一页；无效会跳过当前扫描图。</p>
         </section>
 
         <section class="detail-section">
@@ -190,6 +206,7 @@
             <button class="btn btn-success" id="export-task-json-btn" type="button">导出任务 JSON</button>
             <button class="btn btn-success" id="export-template-jsonl-btn" type="button">导出模板 JSONL</button>
             <button class="btn btn-success" id="export-attempt-jsonl-btn" type="button">导出作答 JSONL</button>
+            <button class="btn btn-secondary" id="export-config-json-btn" type="button">导出修正后配置</button>
           </div>
         </section>
           </div>
@@ -203,6 +220,7 @@
 <script src="js/workbench.js"></script>
 <script src="js/render.js"></script>
 <script src="js/drawing.js"></script>
+<script src="js/api.js"></script>
 <script src="annotation.js"></script>
 </body>
 </html>

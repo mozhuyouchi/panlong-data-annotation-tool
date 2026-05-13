@@ -1,0 +1,2146 @@
+{
+    "projectName":  "高中数学第一册前四本标注测试项目",
+    "annotators":  [
+                       {
+                           "id":  "001",
+                           "label":  "标注员001"
+                       },
+                       {
+                           "id":  "002",
+                           "label":  "标注员002"
+                       },
+                       {
+                           "id":  "003",
+                           "label":  "标注员003"
+                       },
+                       {
+                           "id":  "004",
+                           "label":  "标注员004"
+                       },
+                       {
+                           "id":  "005",
+                           "label":  "标注员005"
+                       },
+                       {
+                           "id":  "006",
+                           "label":  "标注员006"
+                       },
+                       {
+                           "id":  "007",
+                           "label":  "标注员007"
+                       },
+                       {
+                           "id":  "008",
+                           "label":  "标注员008"
+                       }
+                   ],
+    "books":  [
+                  {
+                      "id":  "gaozhongshuxue_diyice_162_4",
+                      "label":  "高中数学第一册",
+                      "folderName":  "高中数学第一册-162-8",
+                      "templateCopyId":  "0-朱润南",
+                      "pageCount":  162,
+                      "pageDigits":  3,
+                      "imageExt":  "png",
+                      "copies":  [
+                                     {
+                                         "id":  "0-朱润南",
+                                         "label":  "模板书（0-朱润南）",
+                                         "folderName":  "0-朱润南"
+                                     },
+                                     {
+                                         "id":  "凌尧谦",
+                                         "label":  "凌尧谦",
+                                         "folderName":  "凌尧谦"
+                                     },
+                                     {
+                                         "id":  "刘姝洁",
+                                         "label":  "刘姝洁",
+                                         "folderName":  "刘姝洁"
+                                     },
+                                     {
+                                         "id":  "吴奕仑",
+                                         "label":  "吴奕仑",
+                                         "folderName":  "吴奕仑"
+                                     }
+                                 ],
+                      "pages":  [
+                                    {
+                                        "logicalPageId":  "p001",
+                                        "label":  "第 1 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "001.png",
+                                                       "凌尧谦":  "001.png",
+                                                       "刘姝洁":  "001.png",
+                                                       "吴奕仑":  "001.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p002",
+                                        "label":  "第 2 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "002.png",
+                                                       "凌尧谦":  "002.png",
+                                                       "刘姝洁":  "002.png",
+                                                       "吴奕仑":  "002.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p003",
+                                        "label":  "第 3 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "003.png",
+                                                       "凌尧谦":  "003.png",
+                                                       "刘姝洁":  "003.png",
+                                                       "吴奕仑":  "003.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p004",
+                                        "label":  "第 4 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "004.png",
+                                                       "凌尧谦":  "004.png",
+                                                       "刘姝洁":  "004.png",
+                                                       "吴奕仑":  "004.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p005",
+                                        "label":  "第 5 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "005.png",
+                                                       "凌尧谦":  "005.png",
+                                                       "刘姝洁":  "005.png",
+                                                       "吴奕仑":  "005.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p006",
+                                        "label":  "第 6 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "006.png",
+                                                       "凌尧谦":  "006.png",
+                                                       "刘姝洁":  "006.png",
+                                                       "吴奕仑":  "006.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p007",
+                                        "label":  "第 7 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "007.png",
+                                                       "凌尧谦":  "007.png",
+                                                       "刘姝洁":  "007.png",
+                                                       "吴奕仑":  "007.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p008",
+                                        "label":  "第 8 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "008.png",
+                                                       "凌尧谦":  "008.png",
+                                                       "刘姝洁":  "008.png",
+                                                       "吴奕仑":  "008.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p009",
+                                        "label":  "第 9 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "009.png",
+                                                       "凌尧谦":  "009.png",
+                                                       "刘姝洁":  "009.png",
+                                                       "吴奕仑":  "009.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p010",
+                                        "label":  "第 10 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "010.png",
+                                                       "凌尧谦":  "010.png",
+                                                       "刘姝洁":  "010.png",
+                                                       "吴奕仑":  "010.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p011",
+                                        "label":  "第 11 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "011.png",
+                                                       "凌尧谦":  "011.png",
+                                                       "刘姝洁":  "011.png",
+                                                       "吴奕仑":  "011.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p012",
+                                        "label":  "第 12 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "012.png",
+                                                       "凌尧谦":  "012.png",
+                                                       "刘姝洁":  "012.png",
+                                                       "吴奕仑":  "012.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p013",
+                                        "label":  "第 13 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "013.png",
+                                                       "凌尧谦":  "013.png",
+                                                       "刘姝洁":  "013.png",
+                                                       "吴奕仑":  "013.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p014",
+                                        "label":  "第 14 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "014.png",
+                                                       "凌尧谦":  "014.png",
+                                                       "刘姝洁":  "014.png",
+                                                       "吴奕仑":  "014.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p015",
+                                        "label":  "第 15 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "015.png",
+                                                       "凌尧谦":  "015.png",
+                                                       "刘姝洁":  "015.png",
+                                                       "吴奕仑":  "015.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p016",
+                                        "label":  "第 16 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "016.png",
+                                                       "凌尧谦":  "016.png",
+                                                       "刘姝洁":  "016.png",
+                                                       "吴奕仑":  "016.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p017",
+                                        "label":  "第 17 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "017.png",
+                                                       "凌尧谦":  "017.png",
+                                                       "刘姝洁":  "017.png",
+                                                       "吴奕仑":  "017.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p018",
+                                        "label":  "第 18 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "018.png",
+                                                       "凌尧谦":  "018.png",
+                                                       "刘姝洁":  "018.png",
+                                                       "吴奕仑":  "018.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p019",
+                                        "label":  "第 19 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "019.png",
+                                                       "凌尧谦":  "019.png",
+                                                       "刘姝洁":  "019.png",
+                                                       "吴奕仑":  "019.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p020",
+                                        "label":  "第 20 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "020.png",
+                                                       "凌尧谦":  "020.png",
+                                                       "刘姝洁":  "020.png",
+                                                       "吴奕仑":  "020.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p021",
+                                        "label":  "第 21 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "021.png",
+                                                       "凌尧谦":  "021.png",
+                                                       "刘姝洁":  "021.png",
+                                                       "吴奕仑":  "021.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p022",
+                                        "label":  "第 22 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "022.png",
+                                                       "凌尧谦":  "022.png",
+                                                       "刘姝洁":  "022.png",
+                                                       "吴奕仑":  "022.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p023",
+                                        "label":  "第 23 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "023.png",
+                                                       "凌尧谦":  "023.png",
+                                                       "刘姝洁":  "023.png",
+                                                       "吴奕仑":  "023.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p024",
+                                        "label":  "第 24 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "024.png",
+                                                       "凌尧谦":  "024.png",
+                                                       "刘姝洁":  "024.png",
+                                                       "吴奕仑":  "024.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p025",
+                                        "label":  "第 25 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "025.png",
+                                                       "凌尧谦":  "025.png",
+                                                       "刘姝洁":  "025.png",
+                                                       "吴奕仑":  "025.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p026",
+                                        "label":  "第 26 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "026.png",
+                                                       "凌尧谦":  "026.png",
+                                                       "刘姝洁":  "026.png",
+                                                       "吴奕仑":  "026.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p027",
+                                        "label":  "第 27 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "027.png",
+                                                       "凌尧谦":  "027.png",
+                                                       "刘姝洁":  "027.png",
+                                                       "吴奕仑":  "027.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p028",
+                                        "label":  "第 28 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "028.png",
+                                                       "凌尧谦":  "028.png",
+                                                       "刘姝洁":  "028.png",
+                                                       "吴奕仑":  "028.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p029",
+                                        "label":  "第 29 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "029.png",
+                                                       "凌尧谦":  "029.png",
+                                                       "刘姝洁":  "029.png",
+                                                       "吴奕仑":  "029.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p030",
+                                        "label":  "第 30 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "030.png",
+                                                       "凌尧谦":  "030.png",
+                                                       "刘姝洁":  "030.png",
+                                                       "吴奕仑":  "030.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p031",
+                                        "label":  "第 31 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "031.png",
+                                                       "凌尧谦":  "031.png",
+                                                       "刘姝洁":  "031.png",
+                                                       "吴奕仑":  "031.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p032",
+                                        "label":  "第 32 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "032.png",
+                                                       "凌尧谦":  "032.png",
+                                                       "刘姝洁":  "032.png",
+                                                       "吴奕仑":  "032.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p033",
+                                        "label":  "第 33 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "033.png",
+                                                       "凌尧谦":  "033.png",
+                                                       "刘姝洁":  "033.png",
+                                                       "吴奕仑":  "033.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p034",
+                                        "label":  "第 34 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "034.png",
+                                                       "凌尧谦":  "034.png",
+                                                       "刘姝洁":  "034.png",
+                                                       "吴奕仑":  "034.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p035",
+                                        "label":  "第 35 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "035.png",
+                                                       "凌尧谦":  "035.png",
+                                                       "刘姝洁":  "035.png",
+                                                       "吴奕仑":  "035.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p036",
+                                        "label":  "第 36 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "036.png",
+                                                       "凌尧谦":  "036.png",
+                                                       "刘姝洁":  "036.png",
+                                                       "吴奕仑":  "036.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p037",
+                                        "label":  "第 37 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "037.png",
+                                                       "凌尧谦":  "037.png",
+                                                       "刘姝洁":  "037.png",
+                                                       "吴奕仑":  "037.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p038",
+                                        "label":  "第 38 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "038.png",
+                                                       "凌尧谦":  "038.png",
+                                                       "刘姝洁":  "038.png",
+                                                       "吴奕仑":  "038.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p039",
+                                        "label":  "第 39 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "039.png",
+                                                       "凌尧谦":  "039.png",
+                                                       "刘姝洁":  "039.png",
+                                                       "吴奕仑":  "039.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p040",
+                                        "label":  "第 40 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "040.png",
+                                                       "凌尧谦":  "040.png",
+                                                       "刘姝洁":  "040.png",
+                                                       "吴奕仑":  "040.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p041",
+                                        "label":  "第 41 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "041.png",
+                                                       "凌尧谦":  "041.png",
+                                                       "刘姝洁":  "041.png",
+                                                       "吴奕仑":  "041.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p042",
+                                        "label":  "第 42 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "042.png",
+                                                       "凌尧谦":  "042.png",
+                                                       "刘姝洁":  "042.png",
+                                                       "吴奕仑":  "042.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p043",
+                                        "label":  "第 43 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "043.png",
+                                                       "凌尧谦":  "043.png",
+                                                       "刘姝洁":  "043.png",
+                                                       "吴奕仑":  "043.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p044",
+                                        "label":  "第 44 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "044.png",
+                                                       "凌尧谦":  "044.png",
+                                                       "刘姝洁":  "044.png",
+                                                       "吴奕仑":  "044.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p045",
+                                        "label":  "第 45 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "045.png",
+                                                       "凌尧谦":  "045.png",
+                                                       "刘姝洁":  "045.png",
+                                                       "吴奕仑":  "045.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p046",
+                                        "label":  "第 46 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "046.png",
+                                                       "凌尧谦":  "046.png",
+                                                       "刘姝洁":  "046.png",
+                                                       "吴奕仑":  "046.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p047",
+                                        "label":  "第 47 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "047.png",
+                                                       "凌尧谦":  "047.png",
+                                                       "刘姝洁":  "047.png",
+                                                       "吴奕仑":  "047.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p048",
+                                        "label":  "第 48 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "048.png",
+                                                       "凌尧谦":  "048.png",
+                                                       "刘姝洁":  "048.png",
+                                                       "吴奕仑":  "048.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p049",
+                                        "label":  "第 49 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "049.png",
+                                                       "凌尧谦":  "049.png",
+                                                       "刘姝洁":  "049.png",
+                                                       "吴奕仑":  "049.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p050",
+                                        "label":  "第 50 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "050.png",
+                                                       "凌尧谦":  "050.png",
+                                                       "刘姝洁":  "050.png",
+                                                       "吴奕仑":  "050.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p051",
+                                        "label":  "第 51 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "051.png",
+                                                       "凌尧谦":  "051.png",
+                                                       "刘姝洁":  "051.png",
+                                                       "吴奕仑":  "051.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p052",
+                                        "label":  "第 52 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "052.png",
+                                                       "凌尧谦":  "052.png",
+                                                       "刘姝洁":  "052.png",
+                                                       "吴奕仑":  "052.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p053",
+                                        "label":  "第 53 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "053.png",
+                                                       "凌尧谦":  "053.png",
+                                                       "刘姝洁":  "053.png",
+                                                       "吴奕仑":  "053.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p054",
+                                        "label":  "第 54 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "054.png",
+                                                       "凌尧谦":  "054.png",
+                                                       "刘姝洁":  "054.png",
+                                                       "吴奕仑":  "054.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p055",
+                                        "label":  "第 55 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "055.png",
+                                                       "凌尧谦":  "055.png",
+                                                       "刘姝洁":  "055.png",
+                                                       "吴奕仑":  "055.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p056",
+                                        "label":  "第 56 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "056.png",
+                                                       "凌尧谦":  "056.png",
+                                                       "刘姝洁":  "056.png",
+                                                       "吴奕仑":  "056.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p057",
+                                        "label":  "第 57 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "057.png",
+                                                       "凌尧谦":  "057.png",
+                                                       "刘姝洁":  "057.png",
+                                                       "吴奕仑":  "057.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p058",
+                                        "label":  "第 58 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "058.png",
+                                                       "凌尧谦":  "058.png",
+                                                       "刘姝洁":  "058.png",
+                                                       "吴奕仑":  "058.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p059",
+                                        "label":  "第 59 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "059.png",
+                                                       "凌尧谦":  "059.png",
+                                                       "刘姝洁":  "059.png",
+                                                       "吴奕仑":  "059.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p060",
+                                        "label":  "第 60 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "060.png",
+                                                       "凌尧谦":  "060.png",
+                                                       "刘姝洁":  "060.png",
+                                                       "吴奕仑":  "060.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p061",
+                                        "label":  "第 61 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "061.png",
+                                                       "凌尧谦":  "061.png",
+                                                       "刘姝洁":  "061.png",
+                                                       "吴奕仑":  "061.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p062",
+                                        "label":  "第 62 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "062.png",
+                                                       "凌尧谦":  "062.png",
+                                                       "刘姝洁":  "062.png",
+                                                       "吴奕仑":  "062.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p063",
+                                        "label":  "第 63 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "063.png",
+                                                       "凌尧谦":  "063.png",
+                                                       "刘姝洁":  "063.png",
+                                                       "吴奕仑":  "063.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p064",
+                                        "label":  "第 64 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "064.png",
+                                                       "凌尧谦":  "064.png",
+                                                       "刘姝洁":  "064.png",
+                                                       "吴奕仑":  "064.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p065",
+                                        "label":  "第 65 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "065.png",
+                                                       "凌尧谦":  "065.png",
+                                                       "刘姝洁":  "065.png",
+                                                       "吴奕仑":  "065.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p066",
+                                        "label":  "第 66 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "066.png",
+                                                       "凌尧谦":  "066.png",
+                                                       "刘姝洁":  "066.png",
+                                                       "吴奕仑":  "066.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p067",
+                                        "label":  "第 67 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "067.png",
+                                                       "凌尧谦":  "067.png",
+                                                       "刘姝洁":  "067.png",
+                                                       "吴奕仑":  "067.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p068",
+                                        "label":  "第 68 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "068.png",
+                                                       "凌尧谦":  "068.png",
+                                                       "刘姝洁":  "068.png",
+                                                       "吴奕仑":  "068.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p069",
+                                        "label":  "第 69 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "069.png",
+                                                       "凌尧谦":  "069.png",
+                                                       "刘姝洁":  "069.png",
+                                                       "吴奕仑":  "069.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p070",
+                                        "label":  "第 70 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "070.png",
+                                                       "凌尧谦":  "070.png",
+                                                       "刘姝洁":  "070.png",
+                                                       "吴奕仑":  "070.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p071",
+                                        "label":  "第 71 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "071.png",
+                                                       "凌尧谦":  "071.png",
+                                                       "刘姝洁":  "071.png",
+                                                       "吴奕仑":  "071.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p072",
+                                        "label":  "第 72 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "072.png",
+                                                       "凌尧谦":  "072.png",
+                                                       "刘姝洁":  "072.png",
+                                                       "吴奕仑":  "072.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p073",
+                                        "label":  "第 73 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "073.png",
+                                                       "凌尧谦":  "073.png",
+                                                       "刘姝洁":  "073.png",
+                                                       "吴奕仑":  "073.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p074",
+                                        "label":  "第 74 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "074.png",
+                                                       "凌尧谦":  "074.png",
+                                                       "刘姝洁":  "074.png",
+                                                       "吴奕仑":  "074.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p075",
+                                        "label":  "第 75 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "075.png",
+                                                       "凌尧谦":  "075.png",
+                                                       "刘姝洁":  "075.png",
+                                                       "吴奕仑":  "075.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p076",
+                                        "label":  "第 76 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "076.png",
+                                                       "凌尧谦":  "076.png",
+                                                       "刘姝洁":  "076.png",
+                                                       "吴奕仑":  "076.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p077",
+                                        "label":  "第 77 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "077.png",
+                                                       "凌尧谦":  "077.png",
+                                                       "刘姝洁":  "077.png",
+                                                       "吴奕仑":  "077.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p078",
+                                        "label":  "第 78 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "078.png",
+                                                       "凌尧谦":  "078.png",
+                                                       "刘姝洁":  "078.png",
+                                                       "吴奕仑":  "078.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p079",
+                                        "label":  "第 79 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "079.png",
+                                                       "凌尧谦":  "079.png",
+                                                       "刘姝洁":  "079.png",
+                                                       "吴奕仑":  "079.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p080",
+                                        "label":  "第 80 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "080.png",
+                                                       "凌尧谦":  "080.png",
+                                                       "刘姝洁":  "080.png",
+                                                       "吴奕仑":  "080.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p081",
+                                        "label":  "第 81 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "081.png",
+                                                       "凌尧谦":  "081.png",
+                                                       "刘姝洁":  "081.png",
+                                                       "吴奕仑":  "081.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p082",
+                                        "label":  "第 82 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "082.png",
+                                                       "凌尧谦":  "082.png",
+                                                       "刘姝洁":  "082.png",
+                                                       "吴奕仑":  "082.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p083",
+                                        "label":  "第 83 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "083.png",
+                                                       "凌尧谦":  "083.png",
+                                                       "刘姝洁":  "083.png",
+                                                       "吴奕仑":  "083.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p084",
+                                        "label":  "第 84 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "084.png",
+                                                       "凌尧谦":  "084.png",
+                                                       "刘姝洁":  "084.png",
+                                                       "吴奕仑":  "084.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p085",
+                                        "label":  "第 85 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "085.png",
+                                                       "凌尧谦":  "085.png",
+                                                       "刘姝洁":  "085.png",
+                                                       "吴奕仑":  "085.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p086",
+                                        "label":  "第 86 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "086.png",
+                                                       "凌尧谦":  "086.png",
+                                                       "刘姝洁":  "086.png",
+                                                       "吴奕仑":  "086.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p087",
+                                        "label":  "第 87 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "087.png",
+                                                       "凌尧谦":  "087.png",
+                                                       "刘姝洁":  "087.png",
+                                                       "吴奕仑":  "087.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p088",
+                                        "label":  "第 88 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "088.png",
+                                                       "凌尧谦":  "088.png",
+                                                       "刘姝洁":  "088.png",
+                                                       "吴奕仑":  "088.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p089",
+                                        "label":  "第 89 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "089.png",
+                                                       "凌尧谦":  "089.png",
+                                                       "刘姝洁":  "089.png",
+                                                       "吴奕仑":  "089.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p090",
+                                        "label":  "第 90 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "090.png",
+                                                       "凌尧谦":  "090.png",
+                                                       "刘姝洁":  "090.png",
+                                                       "吴奕仑":  "090.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p091",
+                                        "label":  "第 91 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "091.png",
+                                                       "凌尧谦":  "091.png",
+                                                       "刘姝洁":  "091.png",
+                                                       "吴奕仑":  "091.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p092",
+                                        "label":  "第 92 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "092.png",
+                                                       "凌尧谦":  "092.png",
+                                                       "刘姝洁":  "092.png",
+                                                       "吴奕仑":  "092.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p093",
+                                        "label":  "第 93 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "093.png",
+                                                       "凌尧谦":  "093.png",
+                                                       "刘姝洁":  "093.png",
+                                                       "吴奕仑":  "093.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p094",
+                                        "label":  "第 94 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "094.png",
+                                                       "凌尧谦":  "094.png",
+                                                       "刘姝洁":  "094.png",
+                                                       "吴奕仑":  "094.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p095",
+                                        "label":  "第 95 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "095.png",
+                                                       "凌尧谦":  "095.png",
+                                                       "刘姝洁":  "095.png",
+                                                       "吴奕仑":  "095.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p096",
+                                        "label":  "第 96 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "096.png",
+                                                       "凌尧谦":  "096.png",
+                                                       "刘姝洁":  "096.png",
+                                                       "吴奕仑":  "096.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p097",
+                                        "label":  "第 97 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "097.png",
+                                                       "凌尧谦":  "097.png",
+                                                       "刘姝洁":  "097.png",
+                                                       "吴奕仑":  "097.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p098",
+                                        "label":  "第 98 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "098.png",
+                                                       "凌尧谦":  "098.png",
+                                                       "刘姝洁":  "098.png",
+                                                       "吴奕仑":  "098.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p099",
+                                        "label":  "第 99 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "099.png",
+                                                       "凌尧谦":  "099.png",
+                                                       "刘姝洁":  "099.png",
+                                                       "吴奕仑":  "099.png"
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p100",
+                                        "label":  "第 100 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "100.png",
+                                                       "凌尧谦":  "100.png",
+                                                       "刘姝洁":  "100.png",
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p101",
+                                        "label":  "第 101 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "101.png",
+                                                       "凌尧谦":  "101.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p102",
+                                        "label":  "第 102 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "102.png",
+                                                       "凌尧谦":  "102.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p103",
+                                        "label":  "第 103 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "103.png",
+                                                       "凌尧谦":  "103.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p104",
+                                        "label":  "第 104 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "104.png",
+                                                       "凌尧谦":  "104.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p105",
+                                        "label":  "第 105 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "105.png",
+                                                       "凌尧谦":  "105.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p106",
+                                        "label":  "第 106 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "106.png",
+                                                       "凌尧谦":  "106.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p107",
+                                        "label":  "第 107 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "107.png",
+                                                       "凌尧谦":  "107.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p108",
+                                        "label":  "第 108 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "108.png",
+                                                       "凌尧谦":  "108.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p109",
+                                        "label":  "第 109 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "109.png",
+                                                       "凌尧谦":  "109.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p110",
+                                        "label":  "第 110 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "110.png",
+                                                       "凌尧谦":  "110.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p111",
+                                        "label":  "第 111 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "111.png",
+                                                       "凌尧谦":  "111.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p112",
+                                        "label":  "第 112 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "112.png",
+                                                       "凌尧谦":  "112.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p113",
+                                        "label":  "第 113 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "113.png",
+                                                       "凌尧谦":  "113.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p114",
+                                        "label":  "第 114 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "114.png",
+                                                       "凌尧谦":  "114.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p115",
+                                        "label":  "第 115 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "115.png",
+                                                       "凌尧谦":  "115.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p116",
+                                        "label":  "第 116 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "116.png",
+                                                       "凌尧谦":  "116.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p117",
+                                        "label":  "第 117 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "117.png",
+                                                       "凌尧谦":  "117.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p118",
+                                        "label":  "第 118 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "118.png",
+                                                       "凌尧谦":  "118.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p119",
+                                        "label":  "第 119 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "119.png",
+                                                       "凌尧谦":  "119.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p120",
+                                        "label":  "第 120 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "120.png",
+                                                       "凌尧谦":  "120.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p121",
+                                        "label":  "第 121 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "121.png",
+                                                       "凌尧谦":  "121.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p122",
+                                        "label":  "第 122 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "122.png",
+                                                       "凌尧谦":  "122.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p123",
+                                        "label":  "第 123 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "123.png",
+                                                       "凌尧谦":  "123.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p124",
+                                        "label":  "第 124 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "124.png",
+                                                       "凌尧谦":  "124.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p125",
+                                        "label":  "第 125 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "125.png",
+                                                       "凌尧谦":  "125.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p126",
+                                        "label":  "第 126 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "126.png",
+                                                       "凌尧谦":  "126.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p127",
+                                        "label":  "第 127 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "127.png",
+                                                       "凌尧谦":  "127.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p128",
+                                        "label":  "第 128 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "128.png",
+                                                       "凌尧谦":  "128.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p129",
+                                        "label":  "第 129 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "129.png",
+                                                       "凌尧谦":  "129.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p130",
+                                        "label":  "第 130 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "130.png",
+                                                       "凌尧谦":  "130.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p131",
+                                        "label":  "第 131 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "131.png",
+                                                       "凌尧谦":  "131.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p132",
+                                        "label":  "第 132 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "132.png",
+                                                       "凌尧谦":  "132.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p133",
+                                        "label":  "第 133 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "133.png",
+                                                       "凌尧谦":  "133.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p134",
+                                        "label":  "第 134 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "134.png",
+                                                       "凌尧谦":  "134.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p135",
+                                        "label":  "第 135 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "135.png",
+                                                       "凌尧谦":  "135.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p136",
+                                        "label":  "第 136 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "136.png",
+                                                       "凌尧谦":  "136.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p137",
+                                        "label":  "第 137 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "137.png",
+                                                       "凌尧谦":  "137.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p138",
+                                        "label":  "第 138 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "138.png",
+                                                       "凌尧谦":  "138.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p139",
+                                        "label":  "第 139 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "139.png",
+                                                       "凌尧谦":  "139.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p140",
+                                        "label":  "第 140 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "140.png",
+                                                       "凌尧谦":  "140.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p141",
+                                        "label":  "第 141 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "141.png",
+                                                       "凌尧谦":  "141.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p142",
+                                        "label":  "第 142 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "142.png",
+                                                       "凌尧谦":  "142.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p143",
+                                        "label":  "第 143 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "143.png",
+                                                       "凌尧谦":  "143.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p144",
+                                        "label":  "第 144 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "144.png",
+                                                       "凌尧谦":  "144.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p145",
+                                        "label":  "第 145 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "145.png",
+                                                       "凌尧谦":  "145.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p146",
+                                        "label":  "第 146 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "146.png",
+                                                       "凌尧谦":  "146.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p147",
+                                        "label":  "第 147 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "147.png",
+                                                       "凌尧谦":  "147.png",
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p148",
+                                        "label":  "第 148 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "148.png",
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p149",
+                                        "label":  "第 149 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "149.png",
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p150",
+                                        "label":  "第 150 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "150.png",
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p151",
+                                        "label":  "第 151 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "151.png",
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p152",
+                                        "label":  "第 152 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  "152.png",
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p153",
+                                        "label":  "第 153 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  null,
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p154",
+                                        "label":  "第 154 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  null,
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p155",
+                                        "label":  "第 155 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  null,
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p156",
+                                        "label":  "第 156 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  null,
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p157",
+                                        "label":  "第 157 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  null,
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p158",
+                                        "label":  "第 158 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  null,
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p159",
+                                        "label":  "第 159 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  null,
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p160",
+                                        "label":  "第 160 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  null,
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p161",
+                                        "label":  "第 161 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  null,
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    },
+                                    {
+                                        "logicalPageId":  "p162",
+                                        "label":  "第 162 页",
+                                        "status":  "annotatable",
+                                        "images":  {
+                                                       "0-朱润南":  null,
+                                                       "凌尧谦":  null,
+                                                       "刘姝洁":  null,
+                                                       "吴奕仑":  null
+                                                   }
+                                    }
+                                ]
+                  }
+              ],
+    "tasks":  [
+                  {
+                      "id":  "task_gaozhongshuxue_diyice_162_4_001_p001_p020",
+                      "title":  "高中数学第一册 第 1-20 页 前四本",
+                      "annotatorId":  "001",
+                      "bookId":  "gaozhongshuxue_diyice_162_4",
+                      "pageStart":  1,
+                      "pageEnd":  20,
+                      "logicalPageIds":  [
+                                             "p001",
+                                             "p002",
+                                             "p003",
+                                             "p004",
+                                             "p005",
+                                             "p006",
+                                             "p007",
+                                             "p008",
+                                             "p009",
+                                             "p010",
+                                             "p011",
+                                             "p012",
+                                             "p013",
+                                             "p014",
+                                             "p015",
+                                             "p016",
+                                             "p017",
+                                             "p018",
+                                             "p019",
+                                             "p020"
+                                         ],
+                      "copyIds":  [
+                                      "0-朱润南",
+                                      "凌尧谦",
+                                      "刘姝洁",
+                                      "吴奕仑"
+                                  ]
+                  },
+                  {
+                      "id":  "task_gaozhongshuxue_diyice_162_4_002_p021_p040",
+                      "title":  "高中数学第一册 第 21-40 页 前四本",
+                      "annotatorId":  "002",
+                      "bookId":  "gaozhongshuxue_diyice_162_4",
+                      "pageStart":  21,
+                      "pageEnd":  40,
+                      "logicalPageIds":  [
+                                             "p021",
+                                             "p022",
+                                             "p023",
+                                             "p024",
+                                             "p025",
+                                             "p026",
+                                             "p027",
+                                             "p028",
+                                             "p029",
+                                             "p030",
+                                             "p031",
+                                             "p032",
+                                             "p033",
+                                             "p034",
+                                             "p035",
+                                             "p036",
+                                             "p037",
+                                             "p038",
+                                             "p039",
+                                             "p040"
+                                         ],
+                      "copyIds":  [
+                                      "0-朱润南",
+                                      "凌尧谦",
+                                      "刘姝洁",
+                                      "吴奕仑"
+                                  ]
+                  },
+                  {
+                      "id":  "task_gaozhongshuxue_diyice_162_4_003_p041_p060",
+                      "title":  "高中数学第一册 第 41-60 页 前四本",
+                      "annotatorId":  "003",
+                      "bookId":  "gaozhongshuxue_diyice_162_4",
+                      "pageStart":  41,
+                      "pageEnd":  60,
+                      "logicalPageIds":  [
+                                             "p041",
+                                             "p042",
+                                             "p043",
+                                             "p044",
+                                             "p045",
+                                             "p046",
+                                             "p047",
+                                             "p048",
+                                             "p049",
+                                             "p050",
+                                             "p051",
+                                             "p052",
+                                             "p053",
+                                             "p054",
+                                             "p055",
+                                             "p056",
+                                             "p057",
+                                             "p058",
+                                             "p059",
+                                             "p060"
+                                         ],
+                      "copyIds":  [
+                                      "0-朱润南",
+                                      "凌尧谦",
+                                      "刘姝洁",
+                                      "吴奕仑"
+                                  ]
+                  },
+                  {
+                      "id":  "task_gaozhongshuxue_diyice_162_4_004_p061_p080",
+                      "title":  "高中数学第一册 第 61-80 页 前四本",
+                      "annotatorId":  "004",
+                      "bookId":  "gaozhongshuxue_diyice_162_4",
+                      "pageStart":  61,
+                      "pageEnd":  80,
+                      "logicalPageIds":  [
+                                             "p061",
+                                             "p062",
+                                             "p063",
+                                             "p064",
+                                             "p065",
+                                             "p066",
+                                             "p067",
+                                             "p068",
+                                             "p069",
+                                             "p070",
+                                             "p071",
+                                             "p072",
+                                             "p073",
+                                             "p074",
+                                             "p075",
+                                             "p076",
+                                             "p077",
+                                             "p078",
+                                             "p079",
+                                             "p080"
+                                         ],
+                      "copyIds":  [
+                                      "0-朱润南",
+                                      "凌尧谦",
+                                      "刘姝洁",
+                                      "吴奕仑"
+                                  ]
+                  },
+                  {
+                      "id":  "task_gaozhongshuxue_diyice_162_4_005_p081_p100",
+                      "title":  "高中数学第一册 第 81-100 页 前四本",
+                      "annotatorId":  "005",
+                      "bookId":  "gaozhongshuxue_diyice_162_4",
+                      "pageStart":  81,
+                      "pageEnd":  100,
+                      "logicalPageIds":  [
+                                             "p081",
+                                             "p082",
+                                             "p083",
+                                             "p084",
+                                             "p085",
+                                             "p086",
+                                             "p087",
+                                             "p088",
+                                             "p089",
+                                             "p090",
+                                             "p091",
+                                             "p092",
+                                             "p093",
+                                             "p094",
+                                             "p095",
+                                             "p096",
+                                             "p097",
+                                             "p098",
+                                             "p099",
+                                             "p100"
+                                         ],
+                      "copyIds":  [
+                                      "0-朱润南",
+                                      "凌尧谦",
+                                      "刘姝洁",
+                                      "吴奕仑"
+                                  ]
+                  },
+                  {
+                      "id":  "task_gaozhongshuxue_diyice_162_4_006_p101_p120",
+                      "title":  "高中数学第一册 第 101-120 页 前四本",
+                      "annotatorId":  "006",
+                      "bookId":  "gaozhongshuxue_diyice_162_4",
+                      "pageStart":  101,
+                      "pageEnd":  120,
+                      "logicalPageIds":  [
+                                             "p101",
+                                             "p102",
+                                             "p103",
+                                             "p104",
+                                             "p105",
+                                             "p106",
+                                             "p107",
+                                             "p108",
+                                             "p109",
+                                             "p110",
+                                             "p111",
+                                             "p112",
+                                             "p113",
+                                             "p114",
+                                             "p115",
+                                             "p116",
+                                             "p117",
+                                             "p118",
+                                             "p119",
+                                             "p120"
+                                         ],
+                      "copyIds":  [
+                                      "0-朱润南",
+                                      "凌尧谦",
+                                      "刘姝洁",
+                                      "吴奕仑"
+                                  ]
+                  },
+                  {
+                      "id":  "task_gaozhongshuxue_diyice_162_4_007_p121_p140",
+                      "title":  "高中数学第一册 第 121-140 页 前四本",
+                      "annotatorId":  "007",
+                      "bookId":  "gaozhongshuxue_diyice_162_4",
+                      "pageStart":  121,
+                      "pageEnd":  140,
+                      "logicalPageIds":  [
+                                             "p121",
+                                             "p122",
+                                             "p123",
+                                             "p124",
+                                             "p125",
+                                             "p126",
+                                             "p127",
+                                             "p128",
+                                             "p129",
+                                             "p130",
+                                             "p131",
+                                             "p132",
+                                             "p133",
+                                             "p134",
+                                             "p135",
+                                             "p136",
+                                             "p137",
+                                             "p138",
+                                             "p139",
+                                             "p140"
+                                         ],
+                      "copyIds":  [
+                                      "0-朱润南",
+                                      "凌尧谦",
+                                      "刘姝洁",
+                                      "吴奕仑"
+                                  ]
+                  },
+                  {
+                      "id":  "task_gaozhongshuxue_diyice_162_4_008_p141_p162",
+                      "title":  "高中数学第一册 第 141-162 页 前四本",
+                      "annotatorId":  "008",
+                      "bookId":  "gaozhongshuxue_diyice_162_4",
+                      "pageStart":  141,
+                      "pageEnd":  162,
+                      "logicalPageIds":  [
+                                             "p141",
+                                             "p142",
+                                             "p143",
+                                             "p144",
+                                             "p145",
+                                             "p146",
+                                             "p147",
+                                             "p148",
+                                             "p149",
+                                             "p150",
+                                             "p151",
+                                             "p152",
+                                             "p153",
+                                             "p154",
+                                             "p155",
+                                             "p156",
+                                             "p157",
+                                             "p158",
+                                             "p159",
+                                             "p160",
+                                             "p161",
+                                             "p162"
+                                         ],
+                      "copyIds":  [
+                                      "0-朱润南",
+                                      "凌尧谦",
+                                      "刘姝洁",
+                                      "吴奕仑"
+                                  ]
+                  }
+              ]
+}

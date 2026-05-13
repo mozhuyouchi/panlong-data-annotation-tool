@@ -14,6 +14,57 @@ async function init() {
   applyRegionZoomStyles();
   applyImageZoomStyle();
   setActiveRegion(state.activeRegionId);
+
+  apiClient.init().then(async (reachable) => {
+    if (reachable) {
+      const serverData = await apiClient.fetchAll();
+      if (serverData) {
+        mergeServerData(serverData);
+        renderProjectSummary();
+        renderAnnotatorOptions();
+        syncSelectionToView();
+        renderTaskList();
+        renderWorkspace();
+        setSaveIndicator('已同步服务器数据');
+      }
+    }
+  });
+}
+
+function mergeServerData(serverData) {
+  if (serverData.project_config) {
+    state.project = serverData.project_config;
+    localStorage.setItem(STORAGE_KEYS.projectConfig, JSON.stringify(serverData.project_config));
+  }
+
+  if (serverData.templates) {
+    Object.entries(serverData.templates).forEach(([key, serverTmpl]) => {
+      const localTmpl = state.workbench.templates[key];
+      if (!localTmpl || (serverTmpl.createdAt || '') >= (localTmpl.createdAt || '')) {
+        state.workbench.templates[key] = serverTmpl;
+      }
+    });
+  }
+
+  if (serverData.attempts) {
+    Object.entries(serverData.attempts).forEach(([key, serverAtt]) => {
+      const localAtt = state.workbench.attempts[key];
+      if (!localAtt || (serverAtt.updatedAt || '') >= (localAtt.updatedAt || '')) {
+        state.workbench.attempts[key] = serverAtt;
+      }
+    });
+  }
+
+  if (serverData.cursors) {
+    const currentTask = getCurrentTask();
+    Object.entries(serverData.cursors).forEach(([taskId, cursor]) => {
+      if (!currentTask || taskId !== currentTask.id) {
+        state.workbench.taskCursor[taskId] = cursor;
+      }
+    });
+  }
+
+  dbSet('workbench', state.workbench);
 }
 
 function cacheElements() {
@@ -27,7 +78,9 @@ function cacheElements() {
     'template-status-text', 'template-help-text', 'template-offset-controls',
     'offset-x-input', 'offset-y-input', 'page-status-buttons', 'annotations-list',
     'current-task-name', 'current-annotator-name', 'image-placeholder', 'image-container',
-    'main-image', 'drawing-box', 'phase-hint', 'phase-hint-text'
+    'main-image', 'drawing-box', 'phase-hint', 'phase-hint-text',
+    'page-map-section', 'page-map-logical', 'page-map-copy', 'page-map-image',
+    'page-map-input'
   ].forEach(id => {
     elements[toCamel(id)] = document.getElementById(id);
   });
@@ -44,6 +97,10 @@ function cacheElements() {
   elements.exportTaskJsonBtn = document.getElementById('export-task-json-btn');
   elements.exportTemplateJsonlBtn = document.getElementById('export-template-jsonl-btn');
   elements.exportAttemptJsonlBtn = document.getElementById('export-attempt-jsonl-btn');
+  elements.applyPageMapBtn = document.getElementById('apply-page-map-btn');
+  elements.markPageMissingBtn = document.getElementById('mark-page-missing-btn');
+  elements.skipLogicalPageBtn = document.getElementById('skip-logical-page-btn');
+  elements.exportConfigJsonBtn = document.getElementById('export-config-json-btn');
   elements.questionTypeButtons = Array.from(document.querySelectorAll('#question-type-buttons .type-btn'));
   elements.imagePanel = document.getElementById('image-panel');
   elements.imageZoomStage = document.getElementById('image-zoom-stage');
@@ -84,6 +141,10 @@ function bindEvents() {
   elements.exportTaskJsonBtn.addEventListener('click', exportTaskJsonPackage);
   elements.exportTemplateJsonlBtn.addEventListener('click', exportTemplateJsonl);
   elements.exportAttemptJsonlBtn.addEventListener('click', exportAttemptJsonl);
+  elements.applyPageMapBtn.addEventListener('click', handleApplyPageMap);
+  elements.markPageMissingBtn.addEventListener('click', handleMarkPageMissing);
+  elements.skipLogicalPageBtn.addEventListener('click', handleSkipLogicalPage);
+  elements.exportConfigJsonBtn.addEventListener('click', exportCurrentProjectConfig);
   elements.offsetXInput.addEventListener('input', handleOffsetChange);
   elements.offsetYInput.addEventListener('input', handleOffsetChange);
   elements.questionTypeButtons.forEach(btn => {
@@ -172,14 +233,194 @@ function handleOffsetChange() {
   renderAnnotationBoxes();
 }
 
+function handleApplyPageMap() {
+  const task = getCurrentTask();
+  const unit = getCurrentUnit();
+  const page = getCurrentBookPage();
+  if (!task || !unit || !page) {
+    alert('当前任务不支持页码对齐修改。');
+    return;
+  }
+
+  const imageFile = elements.pageMapInput.value.trim();
+  if (!imageFile) {
+    alert('请输入要映射的图片文件名，例如 037.png。');
+    return;
+  }
+  if (!/\.(png|jpg|jpeg|webp)$/i.test(imageFile)) {
+    alert('图片文件名需要包含扩展名，例如 037.png。');
+    return;
+  }
+
+  page.images = page.images || {};
+  page.images[unit.copyId] = imageFile;
+  persistProjectConfig();
+  clearPageDataAfterMappingChange(task, unit);
+  touchWorkbench();
+  renderWorkspace();
+}
+
+function handleMarkPageMissing() {
+  const task = getCurrentTask();
+  const unit = getCurrentUnit();
+  const page = getCurrentBookPage();
+  if (!task || !unit || !page) {
+    alert('当前任务不支持页码对齐修改。');
+    return;
+  }
+  if (!confirm('确认将当前副本的当前逻辑页设为缺页吗？')) return;
+
+  page.images = page.images || {};
+  page.images[unit.copyId] = null;
+  persistProjectConfig();
+  clearPageDataAfterMappingChange(task, unit);
+  touchWorkbench();
+  renderWorkspace();
+}
+
+function clearPageDataAfterMappingChange(task, unit) {
+  const pageKey = getUnitPageKey(unit);
+  const template = getTemplate(task.bookId, pageKey);
+  if (template?.sourceCopyId === unit.copyId) {
+    delete state.workbench.templates[buildTemplateKey(task.bookId, pageKey)];
+    Object.keys(state.workbench.attempts)
+      .filter(key => key.startsWith(`${task.bookId}__${pageKey}__`))
+      .forEach(key => delete state.workbench.attempts[key]);
+    return;
+  }
+  clearAttemptForUnit(task, unit);
+}
+
+function handleSkipLogicalPage() {
+  const task = getCurrentTask();
+  const unit = getCurrentUnit();
+  const page = getCurrentBookPage();
+  if (!task || !unit || !page) {
+    alert('当前任务不支持跳过逻辑页。');
+    return;
+  }
+  if (!confirm('确认跳过当前逻辑页吗？该逻辑页会从所有副本的任务中移除。')) return;
+
+  page.status = 'skip';
+  persistProjectConfig();
+  const pageKey = getUnitPageKey(unit);
+  delete state.workbench.templates[buildTemplateKey(task.bookId, pageKey)];
+  Object.keys(state.workbench.attempts)
+    .filter(key => key.startsWith(`${task.bookId}__${pageKey}__`))
+    .forEach(key => delete state.workbench.attempts[key]);
+  state.currentTaskUnitIndex = Math.min(state.currentTaskUnitIndex, Math.max(0, buildTaskUnits(task).length - 1));
+  touchWorkbench();
+  renderTaskList();
+  renderWorkspace();
+}
+
+function exportCurrentProjectConfig() {
+  const name = `${state.project.projectName || 'project-config'}.修正版.json`;
+  downloadTextFile(name, JSON.stringify(state.project, null, 2), 'application/json');
+}
+
+function handleApplyPageMap() {
+  const task = getCurrentTask();
+  const unit = getCurrentUnit();
+  const book = getBook(task?.bookId);
+  if (!task || !unit || !book?.pages?.length || !unit.imageFile) {
+    alert('当前任务不支持页码对齐修改，或当前逻辑页没有可重排的扫描图。');
+    return;
+  }
+
+  const actualPageNo = Number(elements.pageMapInput.value);
+  const currentPageNo = getLogicalPageNo(unit);
+  if (!Number.isInteger(actualPageNo) || actualPageNo < 1) {
+    alert('请输入这张扫描图实际对应的逻辑页，例如 6。');
+    return;
+  }
+  if (actualPageNo < currentPageNo) {
+    alert('当前版本只支持从当前页开始向后重排。若需要往前修正，请回到更早的逻辑页操作。');
+    return;
+  }
+
+  const currentPageIndex = book.pages.findIndex(page => page.logicalPageId === unit.logicalPageId);
+  const actualPageIndex = getPageIndexByLogicalNo(book, actualPageNo);
+  if (currentPageIndex < 0 || actualPageIndex < 0) {
+    alert('输入的实际逻辑页不在当前书本范围内。');
+    return;
+  }
+
+  const scanFiles = getCopyScanFiles(book, unit.copyId);
+  const currentScanIndex = scanFiles.indexOf(unit.imageFile);
+  if (currentScanIndex < 0) {
+    alert('没有在当前副本文件列表中找到这张扫描图。请确认已选择正确的 data 文件夹。');
+    return;
+  }
+
+  for (let index = currentPageIndex; index < actualPageIndex; index += 1) {
+    book.pages[index].images = book.pages[index].images || {};
+    book.pages[index].images[unit.copyId] = null;
+  }
+  remapCopyFromPage(book, unit.copyId, actualPageIndex, currentScanIndex, scanFiles);
+  persistProjectConfig();
+  clearPageDataFromIndex(task, book, currentPageIndex);
+  touchWorkbench();
+  renderTaskList();
+  renderWorkspace();
+}
+
+function handleMarkPageMissing() {
+  const task = getCurrentTask();
+  const unit = getCurrentUnit();
+  const book = getBook(task?.bookId);
+  if (!task || !unit || !book?.pages?.length || !unit.imageFile) {
+    alert('当前任务不支持页码对齐修改，或当前逻辑页没有可重排的扫描图。');
+    return;
+  }
+  if (!confirm('确认当前副本缺失这个逻辑页吗？当前扫描图会自动顺延给下一逻辑页。')) return;
+
+  const nextPageNo = getLogicalPageNo(unit) + 1;
+  elements.pageMapInput.value = String(nextPageNo);
+  handleApplyPageMap();
+}
+
+function handleSkipLogicalPage() {
+  const task = getCurrentTask();
+  const unit = getCurrentUnit();
+  const book = getBook(task?.bookId);
+  if (!task || !unit || !book?.pages?.length || !unit.imageFile) {
+    alert('当前任务不支持跳过扫描图，或当前逻辑页没有可跳过的扫描图。');
+    return;
+  }
+  if (!confirm('确认当前扫描图是封面、目录、空白页等无效页吗？系统会跳过这张图，并从下一张扫描图继续匹配当前逻辑页。')) return;
+
+  const currentPageIndex = book.pages.findIndex(page => page.logicalPageId === unit.logicalPageId);
+  const scanFiles = getCopyScanFiles(book, unit.copyId);
+  const currentScanIndex = scanFiles.indexOf(unit.imageFile);
+  if (currentPageIndex < 0 || currentScanIndex < 0) {
+    alert('没有在当前副本文件列表中找到这张扫描图。请确认已选择正确的 data 文件夹。');
+    return;
+  }
+
+  remapCopyFromPage(book, unit.copyId, currentPageIndex, currentScanIndex + 1, scanFiles);
+  persistProjectConfig();
+  clearPageDataFromIndex(task, book, currentPageIndex);
+  state.currentTaskUnitIndex = Math.min(state.currentTaskUnitIndex, Math.max(0, buildTaskUnits(task).length - 1));
+  touchWorkbench();
+  renderTaskList();
+  renderWorkspace();
+}
+
+function exportCurrentProjectConfig() {
+  const name = `${state.project.projectName || 'project-config'}.修正版.json`;
+  downloadTextFile(name, JSON.stringify(state.project, null, 2), 'application/json');
+}
+
 function handleRedrawTemplate() {
   const task = getCurrentTask();
   const unit = getCurrentUnit();
   if (!task || !unit) return;
   if (!confirm('确认重做当前页模板？该页所有副本对模板的复用都会失效，需要重新建立。')) return;
 
-  delete state.workbench.templates[buildTemplateKey(task.bookId, unit.pageNo)];
-  const affectedAttempts = Object.keys(state.workbench.attempts).filter(key => key.startsWith(`${task.bookId}__${unit.pageNo}__`));
+  const pageKey = getUnitPageKey(unit);
+  delete state.workbench.templates[buildTemplateKey(task.bookId, pageKey)];
+  const affectedAttempts = Object.keys(state.workbench.attempts).filter(key => key.startsWith(`${task.bookId}__${pageKey}__`));
   affectedAttempts.forEach(key => delete state.workbench.attempts[key]);
   touchWorkbench();
   renderWorkspace();
@@ -191,7 +432,7 @@ function handleRedrawCurrentPage() {
   if (!task || !unit) return;
   if (!confirm('确认仅重标当前页吗？这会清空当前页的全部标注内容，并改为独立重标，但不会影响共享模板和其他副本。')) return;
 
-  const attemptKey = buildAttemptKey(task.bookId, task.id, unit.copyId, unit.pageNo);
+  const attemptKey = buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit));
   state.workbench.attempts[attemptKey] = createDetachedAttempt(task, unit);
   state.selectedQuestionId = null;
   state.pendingQuestion = null;

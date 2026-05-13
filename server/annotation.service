@@ -1,0 +1,15 @@
+[Unit]
+Description=Annotation Workbench API
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/var/www/annotation/server
+ExecStart=/usr/bin/python3 /var/www/annotation/server/app.py
+Restart=always
+RestartSec=5
+Environment=ANNOTATION_DB_PATH=/var/www/annotation/data/annotation.db
+
+[Install]
+WantedBy=multi-user.target

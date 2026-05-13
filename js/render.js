@@ -40,9 +40,12 @@ function renderTaskList() {
   tasks.forEach(task => {
     const taskUnits = buildTaskUnits(task);
     const completedUnits = taskUnits.filter(unit => {
-      const attempt = getAttemptByKey(buildAttemptKey(task.bookId, task.id, unit.copyId, unit.pageNo));
+      const attempt = getAttemptByKey(buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit)));
       return attempt && attempt.pageStatus === 'completed';
     }).length;
+    const pageRangeText = task.logicalPageIds?.length
+      ? `${task.logicalPageIds[0]} - ${task.logicalPageIds[task.logicalPageIds.length - 1]}`
+      : `${padPage(task.pageStart)} - ${padPage(task.pageEnd)}`;
     const card = document.createElement('button');
     card.type = 'button';
     card.className = `task-card${task.id === state.activeTaskId ? ' active' : ''}`;
@@ -99,7 +102,7 @@ function renderWorkspace() {
   const currentUnit = getCurrentUnit();
   const book = getBook(task.bookId);
   const copy = getCopy(book, currentUnit.copyId);
-  const template = getTemplate(task.bookId, currentUnit.pageNo);
+  const template = getTemplate(task.bookId, getUnitPageKey(currentUnit));
   const attempt = ensureCurrentAttempt();
   const imageFile = resolveCurrentImageFile();
   let mode = attempt?.templateMode ? '模板+作答' : '作答标注';
@@ -114,6 +117,7 @@ function renderWorkspace() {
   elements.taskRangeText.textContent = `${padPage(task.pageStart)} - ${padPage(task.pageEnd)} 页，共 ${task.copyIds.length} 个副本`;
   elements.unitOrderText.textContent = `${state.currentTaskUnitIndex + 1} / ${state.currentTaskUnits.length}`;
   renderTaskProgress(task);
+  renderPageMapPanel(currentUnit, copy);
 
   const templateReady = !!template;
   elements.templateStatusText.textContent = templateReady
@@ -140,6 +144,18 @@ function renderWorkspace() {
   renderAnnotationsList();
   renderAnnotationBoxes();
   applyRegionZoomStyles();
+}
+
+function renderPageMapPanel(unit, copy) {
+  if (!elements.pageMapSection) return;
+  const hasPageMap = !!unit?.logicalPageId;
+  elements.pageMapSection.classList.toggle('hidden', !hasPageMap);
+  if (!hasPageMap) return;
+
+  elements.pageMapLogical.textContent = `${unit.logicalPageId}${unit.pageLabel ? `（${unit.pageLabel}）` : ''}`;
+  elements.pageMapCopy.textContent = copy ? copy.label : unit.copyId;
+  elements.pageMapImage.textContent = unit.missingPage ? '缺页' : (unit.imageFile || '-');
+  elements.pageMapInput.value = getLogicalPageNo(unit) || '';
 }
 
 function setActiveRegion(regionId) {
@@ -199,7 +215,7 @@ function applyImageZoomStyle() {
 function renderTaskProgress(task) {
   const units = buildTaskUnits(task);
   const completed = units.filter(unit => {
-    const attempt = getAttemptByKey(buildAttemptKey(task.bookId, task.id, unit.copyId, unit.pageNo));
+    const attempt = getAttemptByKey(buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit)));
     return attempt && attempt.pageStatus === 'completed';
   }).length;
   const pct = units.length ? Math.round((completed / units.length) * 100) : 0;

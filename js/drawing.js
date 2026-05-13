@@ -8,7 +8,7 @@ function startNewQuestionFlow(silent = false) {
     return;
   }
   state.pendingQuestion = {
-    questionId: buildQuestionId(getCurrentTask().bookId, getCurrentUnit().pageNo, getCurrentAttempt().questions.length + 1),
+    questionId: buildQuestionId(getCurrentTask().bookId, getUnitPageKey(getCurrentUnit()), getCurrentAttempt().questions.length + 1),
     order: getCurrentAttempt().questions.length + 1,
     type: state.currentType,
     stem: null,

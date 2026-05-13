@@ -2,9 +2,9 @@ function ensureCurrentAttempt() {
   const task = getCurrentTask();
   const unit = getCurrentUnit();
   if (!task || !unit) return null;
-  const attemptKey = buildAttemptKey(task.bookId, task.id, unit.copyId, unit.pageNo);
+  const attemptKey = buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit));
   let attempt = state.workbench.attempts[attemptKey];
-  const template = getTemplate(task.bookId, unit.pageNo);
+  const template = getTemplate(task.bookId, getUnitPageKey(unit));
 
   if (!attempt) {
     if (template) {
@@ -37,7 +37,7 @@ function ensureCurrentAttempt() {
   }
 
   if (!template && attempt.questions.length && !attempt.detachedFromTemplate) {
-    upsertTemplateFromAttempt(task.bookId, unit.pageNo, unit.copyId, attempt);
+    upsertTemplateFromAttempt(task.bookId, getUnitPageKey(unit), unit.copyId, attempt);
   }
 
   return attempt;
@@ -45,11 +45,15 @@ function ensureCurrentAttempt() {
 
 function createBlankAttempt(task, unit) {
   return {
-    attemptKey: buildAttemptKey(task.bookId, task.id, unit.copyId, unit.pageNo),
+    attemptKey: buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit)),
     taskId: task.id,
     bookId: task.bookId,
     copyId: unit.copyId,
+    logicalPageId: unit.logicalPageId || null,
     pageNo: unit.pageNo,
+    pageLabel: unit.pageLabel || '',
+    imageFile: unit.imageFile || null,
+    missingPage: !!unit.missingPage,
     pageStatus: 'not_started',
     templateMode: true,
     detachedFromTemplate: false,
@@ -62,11 +66,15 @@ function createBlankAttempt(task, unit) {
 
 function createDetachedAttempt(task, unit) {
   return {
-    attemptKey: buildAttemptKey(task.bookId, task.id, unit.copyId, unit.pageNo),
+    attemptKey: buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit)),
     taskId: task.id,
     bookId: task.bookId,
     copyId: unit.copyId,
+    logicalPageId: unit.logicalPageId || null,
     pageNo: unit.pageNo,
+    pageLabel: unit.pageLabel || '',
+    imageFile: unit.imageFile || null,
+    missingPage: !!unit.missingPage,
     pageStatus: 'not_started',
     templateMode: true,
     detachedFromTemplate: true,
@@ -79,11 +87,15 @@ function createDetachedAttempt(task, unit) {
 
 function createAttemptFromTemplate(task, unit, template) {
   return {
-    attemptKey: buildAttemptKey(task.bookId, task.id, unit.copyId, unit.pageNo),
+    attemptKey: buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit)),
     taskId: task.id,
     bookId: task.bookId,
     copyId: unit.copyId,
+    logicalPageId: unit.logicalPageId || null,
     pageNo: unit.pageNo,
+    pageLabel: unit.pageLabel || '',
+    imageFile: unit.imageFile || null,
+    missingPage: !!unit.missingPage,
     pageStatus: 'not_started',
     templateMode: false,
     detachedFromTemplate: false,
@@ -127,11 +139,13 @@ function cloneTemplateQuestionToAttempt(question) {
   };
 }
 
-function upsertTemplateFromAttempt(bookId, pageNo, sourceCopyId, attempt) {
-  state.workbench.templates[buildTemplateKey(bookId, pageNo)] = {
-    templateKey: buildTemplateKey(bookId, pageNo),
+function upsertTemplateFromAttempt(bookId, pageKey, sourceCopyId, attempt) {
+  state.workbench.templates[buildTemplateKey(bookId, pageKey)] = {
+    templateKey: buildTemplateKey(bookId, pageKey),
     bookId,
-    pageNo,
+    pageNo: attempt.pageNo,
+    logicalPageId: attempt.logicalPageId || null,
+    pageLabel: attempt.pageLabel || '',
     sourceCopyId,
     createdAt: new Date().toISOString(),
     questions: attempt.questions.map(question => ({
@@ -156,13 +170,112 @@ function upsertTemplateFromAttempt(bookId, pageNo, sourceCopyId, attempt) {
 }
 
 function buildTaskUnits(task) {
+  const book = getBook(task.bookId);
+  if (book?.pages?.length) {
+    const requestedPages = new Set(task.logicalPageIds || []);
+    const taskPages = book.pages.filter(page => {
+      if (page.status === 'skip') return false;
+      if (requestedPages.size) return requestedPages.has(page.logicalPageId);
+      if (task.logicalPageStart && page.logicalPageId < task.logicalPageStart) return false;
+      if (task.logicalPageEnd && page.logicalPageId > task.logicalPageEnd) return false;
+      return true;
+    });
+
+    return taskPages.flatMap((page, index) => {
+      const pageNo = page.pageNo || index + 1;
+      return task.copyIds.map(copyId => {
+        const imageFile = page.images ? page.images[copyId] : null;
+        if (!imageFile) return null;
+        return {
+          pageNo,
+          logicalPageId: page.logicalPageId,
+          pageLabel: page.label || page.logicalPageId,
+          copyId,
+          imageFile,
+          missingPage: false
+        };
+      }).filter(Boolean);
+    });
+  }
+
   const units = [];
   for (let pageNo = task.pageStart; pageNo <= task.pageEnd; pageNo += 1) {
     task.copyIds.forEach(copyId => {
-      units.push({ pageNo, copyId });
+      units.push({ pageNo, copyId, missingPage: false });
     });
   }
   return units;
+}
+
+function getCurrentBookPage() {
+  const task = getCurrentTask();
+  const unit = getCurrentUnit();
+  const book = getBook(task?.bookId);
+  if (!book?.pages?.length || !unit?.logicalPageId) return null;
+  return book.pages.find(page => page.logicalPageId === unit.logicalPageId) || null;
+}
+
+function persistProjectConfig() {
+  localStorage.setItem(STORAGE_KEYS.projectConfig, JSON.stringify(state.project));
+}
+
+function clearAttemptForUnit(task, unit) {
+  if (!task || !unit) return;
+  delete state.workbench.attempts[buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit))];
+}
+
+function getLogicalPageNo(pageOrId) {
+  const value = typeof pageOrId === 'string' ? pageOrId : pageOrId?.logicalPageId;
+  const match = String(value || '').match(/(\d+)$/);
+  return match ? Number(match[1]) : null;
+}
+
+function buildLogicalPageId(pageNo) {
+  return `p${String(pageNo).padStart(3, '0')}`;
+}
+
+function getPageIndexByLogicalNo(book, pageNo) {
+  const pageId = buildLogicalPageId(pageNo);
+  return (book?.pages || []).findIndex(page => page.logicalPageId === pageId);
+}
+
+function getCopyScanFiles(book, copyId) {
+  const copy = getCopy(book, copyId);
+  const basePath = `${book?.folderName || book?.id}/${copy?.folderName || copyId}/`;
+  const fromFolder = state.fileRecords
+    .map(record => record.relativePath.replace(/\\/g, '/'))
+    .filter(path => path.endsWith(`.${book?.imageExt || 'png'}`) && path.includes(basePath))
+    .map(path => path.split('/').pop());
+
+  const files = fromFolder.length
+    ? fromFolder
+    : (book?.pages || []).map(page => page.images?.[copyId]).filter(Boolean);
+
+  return Array.from(new Set(files)).sort(comparePageFileNames);
+}
+
+function comparePageFileNames(a, b) {
+  const aNo = Number(String(a).match(/\d+/)?.[0] || 0);
+  const bNo = Number(String(b).match(/\d+/)?.[0] || 0);
+  return aNo - bNo || String(a).localeCompare(String(b));
+}
+
+function remapCopyFromPage(book, copyId, startPageIndex, firstScanIndex, scanFiles) {
+  for (let index = startPageIndex; index < book.pages.length; index += 1) {
+    const scanIndex = firstScanIndex + (index - startPageIndex);
+    book.pages[index].images = book.pages[index].images || {};
+    book.pages[index].images[copyId] = scanFiles[scanIndex] || null;
+  }
+}
+
+function clearPageDataFromIndex(task, book, startPageIndex) {
+  for (let index = startPageIndex; index < book.pages.length; index += 1) {
+    const pageKey = book.pages[index].logicalPageId;
+    delete state.workbench.templates[buildTemplateKey(task.bookId, pageKey)];
+    Object.keys(state.workbench.attempts)
+      .filter(key => key.startsWith(`${task.bookId}__${pageKey}__`))
+      .forEach(key => delete state.workbench.attempts[key]);
+  }
 }
 
 function stepTaskUnit(direction) {
@@ -188,7 +301,7 @@ function touchCurrentAttempt() {
   const task = getCurrentTask();
   const unit = getCurrentUnit();
   if (isTemplateMode() && attempt.questions.length && !attempt.detachedFromTemplate) {
-    upsertTemplateFromAttempt(task.bookId, unit.pageNo, unit.copyId, attempt);
+    upsertTemplateFromAttempt(task.bookId, getUnitPageKey(unit), unit.copyId, attempt);
   } else {
     autoSaveWorkbench();
   }
@@ -205,7 +318,30 @@ function autoSaveWorkbench() {
   state.saveTimeout = setTimeout(async () => {
     await dbSet('workbench', state.workbench);
     setSaveIndicator(`已保存 ${new Date().toLocaleTimeString()}`);
+    scheduleServerSync();
   }, 250);
+}
+
+var serverSyncTimeout = null;
+
+function scheduleServerSync() {
+  clearTimeout(serverSyncTimeout);
+  serverSyncTimeout = setTimeout(function () {
+    syncWorkbenchToServer();
+  }, 5000);
+}
+
+async function syncWorkbenchToServer() {
+  if (!apiClient.enabled) return;
+  var pushed = await apiClient.push({
+    projectConfig: state.project,
+    templates: state.workbench.templates,
+    attempts: state.workbench.attempts,
+    cursors: state.workbench.taskCursor,
+  });
+  if (pushed) {
+    setSaveIndicator('已保存 已同步 ' + new Date().toLocaleTimeString());
+  }
 }
 
 function setSaveIndicator(text) {
@@ -221,7 +357,7 @@ function exportTaskJsonPackage() {
 
   const book = getBook(task.bookId);
   const taskAttempts = buildTaskUnits(task).map(unit => {
-    const attempt = getAttemptByKey(buildAttemptKey(task.bookId, task.id, unit.copyId, unit.pageNo));
+    const attempt = getAttemptByKey(buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit)));
     return attempt ? exportAttemptRecord(task, book, attempt) : null;
   }).filter(Boolean);
 
@@ -255,7 +391,7 @@ function exportAttemptJsonl() {
   }
   const book = getBook(task.bookId);
   const rows = buildTaskUnits(task).map(unit => {
-    const attempt = getAttemptByKey(buildAttemptKey(task.bookId, task.id, unit.copyId, unit.pageNo));
+    const attempt = getAttemptByKey(buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit)));
     return attempt ? JSON.stringify(exportAttemptRecord(task, book, attempt)) : null;
   }).filter(Boolean);
   downloadTextFile(`${task.id}.attempt.jsonl`, rows.join('\n'), 'application/x-ndjson');
@@ -263,9 +399,12 @@ function exportAttemptJsonl() {
 
 function buildTaskTemplateRecords(task, book) {
   const rows = [];
-  const pageSet = new Set(buildTaskUnits(task).map(unit => unit.pageNo));
-  Array.from(pageSet).sort((a, b) => a - b).forEach(pageNo => {
-    const template = getTemplate(task.bookId, pageNo);
+  const pageMap = new Map();
+  buildTaskUnits(task).forEach(unit => {
+    pageMap.set(getUnitPageKey(unit), unit);
+  });
+  Array.from(pageMap.entries()).forEach(([pageKey, unit]) => {
+    const template = getTemplate(task.bookId, pageKey);
     if (!template) return;
     rows.push({
       record_type: 'template',
@@ -273,8 +412,10 @@ function buildTaskTemplateRecords(task, book) {
       task_id: task.id,
       book_id: task.bookId,
       book_label: book?.label || task.bookId,
-      page_no: pageNo,
-      image_path_pattern: `${book?.folderName || task.bookId}/*/${padPage(pageNo, book?.pageDigits || 4)}.${book?.imageExt || 'png'}`,
+      page_no: template.pageNo || unit.pageNo,
+      logical_page_id: template.logicalPageId || unit.logicalPageId || null,
+      page_label: template.pageLabel || unit.pageLabel || '',
+      image_path_pattern: buildImagePathPattern(book, unit),
       source_copy_id: template.sourceCopyId,
       questions: template.questions.map(question => exportTemplateQuestion(question))
     });
@@ -291,7 +432,11 @@ function exportAttemptRecord(task, book, attempt) {
     book_label: book?.label || attempt.bookId,
     copy_id: attempt.copyId,
     page_no: attempt.pageNo,
-    image_path: buildImageRelativePath(book, attempt.copyId, attempt.pageNo),
+    logical_page_id: attempt.logicalPageId || null,
+    page_label: attempt.pageLabel || '',
+    image_file: attempt.imageFile || null,
+    image_path: buildImageRelativePath(book, attempt.copyId, attempt.pageNo, attempt.imageFile),
+    missing_page: !!attempt.missingPage,
     page_status: attempt.pageStatus,
     detached_from_template: !!attempt.detachedFromTemplate,
     template_offset: attempt.templateOffset || { x: 0, y: 0 },
@@ -527,19 +672,27 @@ function shiftRegion(region, offset) {
   };
 }
 
-function buildImageRelativePath(book, copyId, pageNo) {
+function buildImageRelativePath(book, copyId, pageNo, imageFile = null) {
   const copy = getCopy(book, copyId);
   const digits = book?.pageDigits || 4;
   const ext = book?.imageExt || 'png';
-  return `${book?.folderName || book?.id}/${copy?.folderName || copyId}/${padPage(pageNo, digits)}.${ext}`;
+  const fileName = imageFile || `${padPage(pageNo, digits)}.${ext}`;
+  return `${book?.folderName || book?.id}/${copy?.folderName || copyId}/${fileName}`;
+}
+
+function buildImagePathPattern(book, unit) {
+  if (unit.logicalPageId) {
+    return `${book?.folderName || book?.id}/*/${unit.imageFile || unit.logicalPageId}`;
+  }
+  return `${book?.folderName || book?.id}/*/${padPage(unit.pageNo, book?.pageDigits || 4)}.${book?.imageExt || 'png'}`;
 }
 
 function resolveCurrentImageFile() {
   const task = getCurrentTask();
   const unit = getCurrentUnit();
   const book = getBook(task?.bookId);
-  if (!task || !unit || !book) return null;
-  const expectedPath = buildImageRelativePath(book, unit.copyId, unit.pageNo);
+  if (!task || !unit || !book || unit.missingPage) return null;
+  const expectedPath = buildImageRelativePath(book, unit.copyId, unit.pageNo, unit.imageFile);
   return resolveFileByPath(expectedPath);
 }
 
@@ -582,8 +735,8 @@ function getCopy(book, copyId) {
   return (book?.copies || []).find(item => item.id === copyId) || null;
 }
 
-function getTemplate(bookId, pageNo) {
-  return state.workbench.templates[buildTemplateKey(bookId, pageNo)] || null;
+function getTemplate(bookId, pageKey) {
+  return state.workbench.templates[buildTemplateKey(bookId, pageKey)] || null;
 }
 
 function getAttemptByKey(key) {
@@ -594,7 +747,7 @@ function getCurrentAttempt() {
   const task = getCurrentTask();
   const unit = getCurrentUnit();
   if (!task || !unit) return null;
-  return state.workbench.attempts[buildAttemptKey(task.bookId, task.id, unit.copyId, unit.pageNo)] || null;
+  return state.workbench.attempts[buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit))] || null;
 }
 
 function isTemplateMode() {
@@ -606,7 +759,8 @@ function isCurrentImageReady() {
 }
 
 function buildQuestionId(bookId, pageNo, order) {
-  return `${bookId}__p${padPage(pageNo)}__q${String(order).padStart(2, '0')}`;
+  const pagePart = typeof pageNo === 'number' ? padPage(pageNo) : String(pageNo);
+  return `${bookId}__p${pagePart}__q${String(order).padStart(2, '0')}`;
 }
 
 function buildTemplateKey(bookId, pageNo) {
@@ -615,6 +769,10 @@ function buildTemplateKey(bookId, pageNo) {
 
 function buildAttemptKey(bookId, taskId, copyId, pageNo) {
   return `${bookId}__${pageNo}__${copyId}__${taskId}`;
+}
+
+function getUnitPageKey(unit) {
+  return unit?.logicalPageId || unit?.pageNo;
 }
 
 function padPage(pageNo, digits = 4) {

@@ -201,6 +201,28 @@ code {
   background: #bb4040;
 }
 
+.btn-quiet {
+  background: #f7fafc;
+  color: #4c5d70;
+  border: 1px solid #dce5ee;
+}
+
+.btn-quiet:hover {
+  background: #eef4f9;
+  border-color: #c9d7e4;
+}
+
+.btn-quiet-danger {
+  background: #fff7f7;
+  color: #b73b3b;
+  border: 1px solid #f0c3c3;
+}
+
+.btn-quiet-danger:hover {
+  background: #ffecec;
+  border-color: #e5a7a7;
+}
+
 .select-control,
 .offset-controls input {
   width: 100%;
@@ -224,6 +246,46 @@ code {
 
 .info-card.compact {
   padding: 10px;
+}
+
+.field-label,
+.toolbar-subtitle {
+  display: block;
+  color: #5f6f80;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.field-label {
+  margin: 10px 0 6px;
+}
+
+.toolbar-subtitle {
+  margin: 12px 0 8px;
+}
+
+.template-action-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #edf2f7;
+}
+
+.page-map-actions {
+  margin-top: 10px;
+}
+
+.page-map-actions .btn {
+  flex: 1 1 135px;
+}
+
+.micro-copy {
+  margin-top: 8px;
+  color: #6b7b8c;
+  font-size: 12px;
+  line-height: 1.55;
 }
 
 .task-list {
@@ -275,21 +337,74 @@ code {
 
 .workspace-toolbar {
   padding: 14px 16px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
   gap: 16px;
   align-items: center;
 }
 
+.workspace-toolbar > .button-row {
+  justify-content: flex-end;
+}
+
 .workspace-summary {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 112px 86px 70px 92px minmax(260px, 1fr);
+  gap: 16px;
+  align-items: center;
+  min-width: 0;
+}
+
+.workspace-summary > div {
+  min-width: 0;
 }
 
 .workspace-summary strong {
   display: block;
   font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.workspace-progress {
+  min-width: 260px;
+  padding-left: 4px;
+  justify-self: stretch;
+}
+
+.workspace-progress-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.workspace-progress-row > span {
+  min-width: 78px;
+}
+
+.toolbar-progress {
+  height: 7px;
+  margin-top: 6px;
+}
+
+@media (max-width: 1280px) {
+  .workspace-toolbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .workspace-toolbar > .button-row {
+    justify-content: flex-start;
+  }
+
+  .workspace-summary {
+    grid-template-columns: repeat(4, minmax(68px, max-content));
+  }
+
+  .workspace-progress {
+    grid-column: 1 / -1;
+  }
 }
 
 .workspace-empty {
@@ -485,6 +600,12 @@ code {
   flex-wrap: wrap;
 }
 
+.fixed-toolbar-section .type-btns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
 .type-btn,
 .status-btn {
   border-radius: 999px;
@@ -497,6 +618,7 @@ code {
 .type-btn {
   padding: 7px 12px;
   font-size: 12px;
+  min-height: 34px;
 }
 
 .type-btn.active,
@@ -504,6 +626,10 @@ code {
   background: #1665a8;
   color: white;
   border-color: #1665a8;
+}
+
+.type-btn.active {
+  box-shadow: 0 2px 6px rgba(22, 101, 168, 0.22);
 }
 
 .status-btn {
@@ -527,6 +653,11 @@ code {
 .status-btn[data-status="hold"].active { background: #d18c2c; }
 .status-btn[data-status="issue"] { border-color: #d64d4d; color: #d64d4d; }
 .status-btn[data-status="issue"].active { background: #d64d4d; }
+
+.status-btn.active,
+.status-btn[data-status].active {
+  color: white;
+}
 
 .annotations-list {
   flex: none;
