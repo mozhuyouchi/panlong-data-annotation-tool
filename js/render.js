@@ -104,7 +104,7 @@ function renderWorkspace() {
   const copy = getCopy(book, currentUnit.copyId);
   const template = getTemplate(task.bookId, getUnitPageKey(currentUnit));
   const attempt = ensureCurrentAttempt();
-  const imageFile = resolveCurrentImageFile();
+  const imageFile = resolveImageSource();
   let mode = attempt?.templateMode ? '模板+作答' : '作答标注';
   if (attempt?.detachedFromTemplate) {
     mode = '本页独立重标';
@@ -242,8 +242,8 @@ function renderPageStatusButtons(attempt) {
   });
 }
 
-function renderCurrentImage(file) {
-  if (!file) {
+function renderCurrentImage(source) {
+  if (!source) {
     elements.imagePlaceholder.classList.remove('hidden');
     elements.imageContainer.classList.add('hidden');
     elements.currentFilename.textContent = '未找到';
@@ -253,7 +253,9 @@ function renderCurrentImage(file) {
     return;
   }
 
-  const objectUrl = URL.createObjectURL(file);
+  const isUrl = typeof source === 'string';
+  const src = isUrl ? source : URL.createObjectURL(source);
+
   elements.mainImage.onload = function() {
     state.imageNaturalW = elements.mainImage.naturalWidth;
     state.imageNaturalH = elements.mainImage.naturalHeight;
@@ -261,10 +263,10 @@ function renderCurrentImage(file) {
     updateDisplaySize();
     renderAnnotationBoxes();
     applyImageZoomStyle();
-    URL.revokeObjectURL(objectUrl);
+    if (!isUrl) URL.revokeObjectURL(src);
   };
-  elements.mainImage.src = objectUrl;
-  elements.currentFilename.textContent = file.name;
+  elements.mainImage.src = src;
+  elements.currentFilename.textContent = isUrl ? source.split('/').pop() : source.name;
   elements.imagePlaceholder.classList.add('hidden');
   elements.imageContainer.classList.remove('hidden');
 }
@@ -642,22 +644,26 @@ function renderAnnotationBoxes() {
   attempt.questions.forEach((question, index) => {
     const cfg = typeConfig[question.type];
     const stemLabel = `#${index + 1} ${cfg.label} 题干`;
-    if (question.stem) {
-      const region = question.fromTemplate ? shiftRegion(question.stem.display, offset) : question.stem.display;
-      drawAnnotationBox(region, cfg.colorClass, cfg.borderColor, stemLabel, false, question.questionId, question.questionId === state.selectedQuestionId);
+    if (question.stem?.bbox) {
+      const bbox = question.fromTemplate ? applyOffsetToBbox(question.stem.bbox, offset) : question.stem.bbox;
+      const region = imageToDisplayRegion(bbox);
+      if (region) drawAnnotationBox(region, cfg.colorClass, cfg.borderColor, stemLabel, false, question.questionId, question.questionId === state.selectedQuestionId);
     }
-    if (question.answer) {
-      drawAnnotationBox(question.answer.display, cfg.colorClass, cfg.borderColor, `#${index + 1} 作答`, true, question.questionId, question.questionId === state.selectedQuestionId);
+    if (question.answer?.bbox) {
+      const region = imageToDisplayRegion(question.answer.bbox);
+      if (region) drawAnnotationBox(region, cfg.colorClass, cfg.borderColor, `#${index + 1} 作答`, true, question.questionId, question.questionId === state.selectedQuestionId);
     }
     if (question.subQuestions) {
       question.subQuestions.forEach((subQuestion, subIndex) => {
         const subColor = '#19837b';
-        if (subQuestion.stem) {
-          const region = question.fromTemplate ? shiftRegion(subQuestion.stem.display, offset) : subQuestion.stem.display;
-          drawAnnotationBox(region, cfg.colorClass, subColor, `#${index + 1}-${subIndex + 1} 子题题干`, false, question.questionId, question.questionId === state.selectedQuestionId);
+        if (subQuestion.stem?.bbox) {
+          const bbox = question.fromTemplate ? applyOffsetToBbox(subQuestion.stem.bbox, offset) : subQuestion.stem.bbox;
+          const region = imageToDisplayRegion(bbox);
+          if (region) drawAnnotationBox(region, cfg.colorClass, subColor, `#${index + 1}-${subIndex + 1} 子题题干`, false, question.questionId, question.questionId === state.selectedQuestionId);
         }
-        if (subQuestion.answer) {
-          drawAnnotationBox(subQuestion.answer.display, cfg.colorClass, subColor, `#${index + 1}-${subIndex + 1} 作答`, true, question.questionId, question.questionId === state.selectedQuestionId);
+        if (subQuestion.answer?.bbox) {
+          const region = imageToDisplayRegion(subQuestion.answer.bbox);
+          if (region) drawAnnotationBox(region, cfg.colorClass, subColor, `#${index + 1}-${subIndex + 1} 作答`, true, question.questionId, question.questionId === state.selectedQuestionId);
         }
       });
     }

@@ -22,18 +22,33 @@ function ensureCurrentAttempt() {
     !attempt.detachedFromTemplate &&
     (
       attempt.templateMode ||
-      !attempt.questions.length
+      !attempt.questions.length ||
+      template.questions.length > attempt.questions.length
     );
 
   if (shouldHydrateFromTemplate) {
-    const nextAttempt = createAttemptFromTemplate(task, unit, template);
-    nextAttempt.pageStatus = attempt.pageStatus || 'not_started';
-    nextAttempt.templateOffset = attempt.templateOffset || { x: 0, y: 0 };
-    nextAttempt.createdAt = attempt.createdAt || nextAttempt.createdAt;
-    nextAttempt.updatedAt = new Date().toISOString();
-    state.workbench.attempts[attemptKey] = nextAttempt;
-    attempt = nextAttempt;
-    autoSaveWorkbench();
+    if (attempt.templateMode || !attempt.questions.length) {
+      const nextAttempt = createAttemptFromTemplate(task, unit, template);
+      nextAttempt.pageStatus = attempt.pageStatus || 'not_started';
+      nextAttempt.templateOffset = attempt.templateOffset || { x: 0, y: 0 };
+      nextAttempt.createdAt = attempt.createdAt || nextAttempt.createdAt;
+      nextAttempt.updatedAt = new Date().toISOString();
+      state.workbench.attempts[attemptKey] = nextAttempt;
+      attempt = nextAttempt;
+      autoSaveWorkbench();
+    } else {
+      const existingIds = new Set(attempt.questions.map(function (q) { return q.questionId; }));
+      template.questions.forEach(function (tmplQ) {
+        if (!existingIds.has(tmplQ.questionId)) {
+          var newQ = JSON.parse(JSON.stringify(tmplQ));
+          newQ.fromTemplate = true;
+          attempt.questions.push(newQ);
+        }
+      });
+      attempt.questions.sort(function (a, b) { return a.order - b.order; });
+      attempt.updatedAt = new Date().toISOString();
+      autoSaveWorkbench();
+    }
   }
 
   if (!template && attempt.questions.length && !attempt.detachedFromTemplate) {
@@ -652,6 +667,18 @@ function displayToImageBbox(region) {
   };
 }
 
+function imageToDisplayRegion(bbox) {
+  if (!bbox) return null;
+  const scaleX = state.displayW / state.imageNaturalW;
+  const scaleY = state.displayH / state.imageNaturalH;
+  return {
+    x: Math.round(bbox.x * scaleX),
+    y: Math.round(bbox.y * scaleY),
+    w: Math.round(bbox.w * scaleX),
+    h: Math.round(bbox.h * scaleY)
+  };
+}
+
 function applyOffsetToBbox(bbox, offset) {
   const scaleX = state.imageNaturalW / state.displayW;
   const scaleY = state.imageNaturalH / state.displayH;
@@ -694,6 +721,21 @@ function resolveCurrentImageFile() {
   if (!task || !unit || !book || unit.missingPage) return null;
   const expectedPath = buildImageRelativePath(book, unit.copyId, unit.pageNo, unit.imageFile);
   return resolveFileByPath(expectedPath);
+}
+
+function resolveImageUrl() {
+  const task = getCurrentTask();
+  const unit = getCurrentUnit();
+  const book = getBook(task?.bookId);
+  if (!task || !unit || !book || unit.missingPage) return null;
+  const relativePath = buildImageRelativePath(book, unit.copyId, unit.pageNo, unit.imageFile);
+  return '/data/' + relativePath;
+}
+
+function resolveImageSource() {
+  var localFile = resolveCurrentImageFile();
+  if (localFile) return localFile;
+  return resolveImageUrl();
 }
 
 function resolveFileByPath(expectedPath) {
