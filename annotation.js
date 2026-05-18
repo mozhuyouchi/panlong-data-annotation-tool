@@ -5,30 +5,26 @@ async function init() {
   bindEvents();
   state.db = await openDb();
   await loadPersistedState();
+
+  var reachable = await apiClient.init();
+  if (reachable) {
+    var serverData = await apiClient.fetchAll();
+    if (serverData) {
+      mergeServerData(serverData);
+    }
+  }
+
   renderProjectSummary();
   renderAnnotatorOptions();
   syncSelectionToView();
   renderTaskList();
   renderWorkspace();
-  setSaveIndicator('已加载');
+  setSaveIndicator(reachable ? '已同步服务器数据' : '已加载(离线模式)');
   applyRegionZoomStyles();
   applyImageZoomStyle();
   setActiveRegion(state.activeRegionId);
 
-  apiClient.init().then(async (reachable) => {
-    if (reachable) {
-      const serverData = await apiClient.fetchAll();
-      if (serverData) {
-        mergeServerData(serverData);
-        renderProjectSummary();
-        renderAnnotatorOptions();
-        syncSelectionToView();
-        renderTaskList();
-        renderWorkspace();
-        setSaveIndicator('已同步服务器数据');
-      }
-    }
-  });
+  document.body.classList.add('app-ready');
 }
 
 function mergeServerData(serverData) {
@@ -65,6 +61,26 @@ function mergeServerData(serverData) {
   }
 
   dbSet('workbench', state.workbench);
+
+  autoSelectAnnotatorAndTask();
+}
+
+function autoSelectAnnotatorAndTask() {
+  var annotators = state.project.annotators || [];
+  var tasks = state.project.tasks || [];
+
+  if (!state.annotatorId || !annotators.find(function (a) { return a.id === state.annotatorId; })) {
+    state.annotatorId = annotators.length ? annotators[0].id : '';
+    localStorage.setItem(STORAGE_KEYS.annotatorId, state.annotatorId);
+  }
+
+  if (!state.activeTaskId) {
+    var myTasks = tasks.filter(function (t) { return t.annotatorId === state.annotatorId; });
+    if (myTasks.length) {
+      state.activeTaskId = myTasks[0].id;
+      localStorage.setItem(STORAGE_KEYS.activeTaskId, myTasks[0].id);
+    }
+  }
 }
 
 function cacheElements() {
@@ -88,19 +104,16 @@ function cacheElements() {
   elements.configInput = document.getElementById('config-input');
   elements.folderInput = document.getElementById('folder-input');
   elements.enterWorkbenchBtn = document.getElementById('enter-workbench-btn');
-  elements.downloadConfigTemplateBtn = document.getElementById('download-config-template-btn');
   elements.prevUnitBtn = document.getElementById('prev-unit-btn');
   elements.nextUnitBtn = document.getElementById('next-unit-btn');
   elements.markCompleteBtn = document.getElementById('mark-complete-btn');
   elements.redrawTemplateBtn = document.getElementById('redraw-template-btn');
   elements.redrawCurrentPageBtn = document.getElementById('redraw-current-page-btn');
   elements.exportTaskJsonBtn = document.getElementById('export-task-json-btn');
-  elements.exportTemplateJsonlBtn = document.getElementById('export-template-jsonl-btn');
-  elements.exportAttemptJsonlBtn = document.getElementById('export-attempt-jsonl-btn');
   elements.applyPageMapBtn = document.getElementById('apply-page-map-btn');
-  elements.markPageMissingBtn = document.getElementById('mark-page-missing-btn');
   elements.skipLogicalPageBtn = document.getElementById('skip-logical-page-btn');
-  elements.exportConfigJsonBtn = document.getElementById('export-config-json-btn');
+  elements.jumpPageInput = document.getElementById('jump-page-input');
+  elements.jumpPageBtn = document.getElementById('jump-page-btn');
   elements.questionTypeButtons = Array.from(document.querySelectorAll('#question-type-buttons .type-btn'));
   elements.imagePanel = document.getElementById('image-panel');
   elements.imageZoomStage = document.getElementById('image-zoom-stage');
@@ -123,9 +136,6 @@ function bindEvents() {
     }
     renderTaskList();
   });
-  elements.downloadConfigTemplateBtn.addEventListener('click', () => {
-    downloadTextFile('project-config.sample.json', DEFAULT_PROJECT_CONFIG_TEXT, 'application/json');
-  });
   elements.prevUnitBtn.addEventListener('click', () => stepTaskUnit(-1));
   elements.nextUnitBtn.addEventListener('click', () => stepTaskUnit(1));
   elements.markCompleteBtn.addEventListener('click', () => {
@@ -139,14 +149,14 @@ function bindEvents() {
   elements.redrawTemplateBtn.addEventListener('click', handleRedrawTemplate);
   elements.redrawCurrentPageBtn.addEventListener('click', handleRedrawCurrentPage);
   elements.exportTaskJsonBtn.addEventListener('click', exportTaskJsonPackage);
-  elements.exportTemplateJsonlBtn.addEventListener('click', exportTemplateJsonl);
-  elements.exportAttemptJsonlBtn.addEventListener('click', exportAttemptJsonl);
   elements.applyPageMapBtn.addEventListener('click', handleApplyPageMap);
-  elements.markPageMissingBtn.addEventListener('click', handleMarkPageMissing);
   elements.skipLogicalPageBtn.addEventListener('click', handleSkipLogicalPage);
-  elements.exportConfigJsonBtn.addEventListener('click', exportCurrentProjectConfig);
   elements.offsetXInput.addEventListener('input', handleOffsetChange);
   elements.offsetYInput.addEventListener('input', handleOffsetChange);
+  elements.jumpPageBtn.addEventListener('click', handleJumpPage);
+  elements.jumpPageInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') handleJumpPage();
+  });
   elements.questionTypeButtons.forEach(btn => {
     btn.addEventListener('click', () => setCurrentType(btn.dataset.type));
   });
@@ -260,24 +270,6 @@ function handleApplyPageMap() {
   renderWorkspace();
 }
 
-function handleMarkPageMissing() {
-  const task = getCurrentTask();
-  const unit = getCurrentUnit();
-  const page = getCurrentBookPage();
-  if (!task || !unit || !page) {
-    alert('当前任务不支持页码对齐修改。');
-    return;
-  }
-  if (!confirm('确认将当前副本的当前逻辑页设为缺页吗？')) return;
-
-  page.images = page.images || {};
-  page.images[unit.copyId] = null;
-  persistProjectConfig();
-  clearPageDataAfterMappingChange(task, unit);
-  touchWorkbench();
-  renderWorkspace();
-}
-
 function clearPageDataAfterMappingChange(task, unit) {
   const pageKey = getUnitPageKey(unit);
   const template = getTemplate(task.bookId, pageKey);
@@ -289,6 +281,33 @@ function clearPageDataAfterMappingChange(task, unit) {
     return;
   }
   clearAttemptForUnit(task, unit);
+}
+
+function handleJumpPage() {
+  var pageNo = parseInt(elements.jumpPageInput.value, 10);
+  if (!Number.isInteger(pageNo) || pageNo < 1) {
+    alert('请输入有效的页码。');
+    return;
+  }
+  var task = getCurrentTask();
+  if (!task) return;
+  var book = getBook(task.bookId);
+  var targetIndex = state.currentTaskUnits.findIndex(function (u) {
+    return u.pageNo === pageNo && u.copyId === (book?.templateCopyId || '');
+  });
+  if (targetIndex < 0) {
+    var firstIndex = state.currentTaskUnits.findIndex(function (u) {
+      return u.pageNo === pageNo;
+    });
+    if (firstIndex >= 0) targetIndex = firstIndex;
+  }
+  if (targetIndex >= 0) {
+    state.currentTaskUnitIndex = targetIndex;
+    persistTaskCursor();
+    renderWorkspace();
+  } else {
+    alert('未找到第 ' + pageNo + ' 页。');
+  }
 }
 
 function handleSkipLogicalPage() {
@@ -312,11 +331,6 @@ function handleSkipLogicalPage() {
   touchWorkbench();
   renderTaskList();
   renderWorkspace();
-}
-
-function exportCurrentProjectConfig() {
-  const name = `${state.project.projectName || 'project-config'}.修正版.json`;
-  downloadTextFile(name, JSON.stringify(state.project, null, 2), 'application/json');
 }
 
 function handleApplyPageMap() {
@@ -365,21 +379,6 @@ function handleApplyPageMap() {
   renderWorkspace();
 }
 
-function handleMarkPageMissing() {
-  const task = getCurrentTask();
-  const unit = getCurrentUnit();
-  const book = getBook(task?.bookId);
-  if (!task || !unit || !book?.pages?.length || !unit.imageFile) {
-    alert('当前任务不支持页码对齐修改，或当前逻辑页没有可重排的扫描图。');
-    return;
-  }
-  if (!confirm('确认当前副本缺失这个逻辑页吗？当前扫描图会自动顺延给下一逻辑页。')) return;
-
-  const nextPageNo = getLogicalPageNo(unit) + 1;
-  elements.pageMapInput.value = String(nextPageNo);
-  handleApplyPageMap();
-}
-
 function handleSkipLogicalPage() {
   const task = getCurrentTask();
   const unit = getCurrentUnit();
@@ -405,11 +404,6 @@ function handleSkipLogicalPage() {
   touchWorkbench();
   renderTaskList();
   renderWorkspace();
-}
-
-function exportCurrentProjectConfig() {
-  const name = `${state.project.projectName || 'project-config'}.修正版.json`;
-  downloadTextFile(name, JSON.stringify(state.project, null, 2), 'application/json');
 }
 
 function handleRedrawTemplate() {

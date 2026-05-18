@@ -395,6 +395,7 @@ function renderQuestionStatusSection(container, question) {
     btn.addEventListener('click', e => {
       e.stopPropagation();
       question.status = statusId;
+      if (statusId === 'correct') copyAnswerKeyToStudent(question);
       touchCurrentAttempt();
       renderAnnotationsList();
     });
@@ -444,12 +445,12 @@ function renderTemplateAnswerSection(container, question) {
   label.textContent = '标准答案';
   area.appendChild(label);
 
-  const editable = isTemplateMode();
   if (question.type === 'single' || question.type === 'multiple') {
-    buildOptionAnswerSelector(area, question, 'answer_key', question.type === 'multiple', editable);
+    buildOptionAnswerSelector(area, question, 'answer_key', question.type === 'multiple', true);
   } else {
-    buildTextAndImageAnswerEditor(area, question, 'answer_key', 'answer_key_images', '输入标准答案文字...', editable);
+    buildTextAndImageAnswerEditor(area, question, 'answer_key', 'answer_key_images', '输入标准答案文字...', true);
   }
+  attachAnswerKeySync(area, question);
   container.appendChild(area);
 }
 
@@ -546,6 +547,7 @@ function renderSubQuestionsSection(container, question) {
       btn.addEventListener('click', e => {
         e.stopPropagation();
         subQuestion.status = statusId;
+        if (statusId === 'correct') copyAnswerKeyToStudent(subQuestion);
         touchCurrentAttempt();
         renderAnnotationsList();
       });
@@ -596,8 +598,9 @@ function renderSubQuestionsSection(container, question) {
       'answer_key',
       'answer_key_images',
       '输入子题标准答案文字...',
-      isTemplateMode()
+      true
     );
+    attachAnswerKeySync(standardAnswerArea, subQuestion);
     subItem.appendChild(standardAnswerArea);
 
     const studentAnswerArea = document.createElement('div');
@@ -834,6 +837,24 @@ function drawTempBox(region, borderColor, labelText) {
   box.appendChild(label);
 
   elements.imageContainer.appendChild(box);
+}
+
+function copyAnswerKeyToStudent(target) {
+  target.student_answer = target.answer_key;
+  target.student_answer_images = (target.answer_key_images || []).slice();
+}
+
+function attachAnswerKeySync(area, target) {
+  area.addEventListener('input', function () {
+    if (target.status === 'correct') {
+      copyAnswerKeyToStudent(target);
+    }
+  });
+  area.addEventListener('change', function () {
+    if (target.status === 'correct') {
+      copyAnswerKeyToStudent(target);
+    }
+  });
 }
 
 function selectQuestion(questionId) {

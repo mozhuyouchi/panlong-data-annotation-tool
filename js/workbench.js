@@ -387,31 +387,6 @@ function exportTaskJsonPackage() {
   downloadTextFile(`${task.id}.json`, JSON.stringify(payload, null, 2), 'application/json');
 }
 
-function exportTemplateJsonl() {
-  const task = getCurrentTask();
-  if (!task) {
-    alert('请先选择任务。');
-    return;
-  }
-  const book = getBook(task.bookId);
-  const rows = buildTaskTemplateRecords(task, book).map(record => JSON.stringify(record));
-  downloadTextFile(`${task.id}.template.jsonl`, rows.join('\n'), 'application/x-ndjson');
-}
-
-function exportAttemptJsonl() {
-  const task = getCurrentTask();
-  if (!task) {
-    alert('请先选择任务。');
-    return;
-  }
-  const book = getBook(task.bookId);
-  const rows = buildTaskUnits(task).map(unit => {
-    const attempt = getAttemptByKey(buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit)));
-    return attempt ? JSON.stringify(exportAttemptRecord(task, book, attempt)) : null;
-  }).filter(Boolean);
-  downloadTextFile(`${task.id}.attempt.jsonl`, rows.join('\n'), 'application/x-ndjson');
-}
-
 function buildTaskTemplateRecords(task, book) {
   const rows = [];
   const pageMap = new Map();
@@ -519,6 +494,7 @@ function buildTextAndImageAnswerEditor(container, target, keyField, imageField, 
   textInput.placeholder = placeholder;
   textInput.value = target[keyField] || '';
   textInput.disabled = !editable;
+  textInput.addEventListener('click', function (e) { e.stopPropagation(); });
   textInput.addEventListener('input', function() {
     target[keyField] = this.value;
     touchCurrentAttempt();

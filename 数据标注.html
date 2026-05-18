@@ -8,10 +8,12 @@
 </head>
 <body>
 
+<div class="loading-guard">正在加载…</div>
+
 <header class="topbar">
   <div>
     <h1>习题册数据标注工作台</h1>
-    <p class="topbar-subtitle">纯前端试运行版：任务分配、本地文件夹读取、模板复用、自动保存</p>
+    <p class="topbar-subtitle">习题册数据标注正式版：任务分配、模板复用、数据共享、自动保存</p>
   </div>
   <div class="topbar-status">
     <div class="status-item">
@@ -43,7 +45,6 @@
             导入配置 JSON
             <input type="file" id="config-input" accept=".json" hidden>
           </label>
-          <button class="btn btn-secondary" id="download-config-template-btn" type="button">下载配置模板</button>
         </div>
         <div class="info-card">
           <div>项目名称：<strong id="project-name">-</strong></div>
@@ -63,7 +64,7 @@
       </div>
     </section>
 
-    <section class="panel-block">
+    <section class="panel-block hidden">
       <div class="panel-heading">
         <h2>本地文件夹</h2>
       </div>
@@ -109,6 +110,9 @@
         </div>
       </div>
       <div class="button-row">
+        <label class="jump-label">跳至页码</label>
+        <input class="jump-input" id="jump-page-input" type="number" min="1" placeholder="页码">
+        <button class="btn btn-secondary" id="jump-page-btn" type="button">跳转</button>
         <button class="btn btn-secondary" id="prev-unit-btn" type="button">上一个单元</button>
         <button class="btn btn-secondary" id="next-unit-btn" type="button">下一个单元</button>
         <button class="btn btn-success" id="mark-complete-btn" type="button">标记本页完成</button>
@@ -182,7 +186,6 @@
           <input class="compact-input" id="page-map-input" type="number" min="1" step="1" placeholder="例如 6">
           <div class="button-row page-map-actions">
             <button class="btn btn-secondary" id="apply-page-map-btn" type="button">确认并重排后续页</button>
-            <button class="btn btn-secondary" id="mark-page-missing-btn" type="button">当前逻辑页缺失</button>
             <button class="btn btn-danger btn-quiet-danger" id="skip-logical-page-btn" type="button">当前扫描图无效</button>
           </div>
           <p class="micro-copy">缺失会把当前图顺延给下一页；无效会跳过当前扫描图。</p>
@@ -204,9 +207,6 @@
           <h3>导出结果</h3>
           <div class="button-row">
             <button class="btn btn-success" id="export-task-json-btn" type="button">导出任务 JSON</button>
-            <button class="btn btn-success" id="export-template-jsonl-btn" type="button">导出模板 JSONL</button>
-            <button class="btn btn-success" id="export-attempt-jsonl-btn" type="button">导出作答 JSONL</button>
-            <button class="btn btn-secondary" id="export-config-json-btn" type="button">导出修正后配置</button>
           </div>
         </section>
           </div>

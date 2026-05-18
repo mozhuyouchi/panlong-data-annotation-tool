@@ -11,10 +11,7 @@ const DB_STORE = 'kv';
 const PAGE_STATUSES = [
   { id: 'not_started', label: '未开始' },
   { id: 'in_progress', label: '进行中' },
-  { id: 'completed', label: '已完成' },
-  { id: 'skipped', label: '跳过本页' },
-  { id: 'hold', label: '暂不标' },
-  { id: 'issue', label: '有问题页' }
+  { id: 'completed', label: '已完成' }
 ];
 
 const typeConfig = {

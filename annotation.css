@@ -8,6 +8,22 @@ body {
   overflow: hidden;
 }
 
+.app-shell { visibility: hidden; }
+body.app-ready .app-shell { visibility: visible; }
+
+.loading-guard {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef3f7;
+  z-index: 1000;
+  font-size: 16px;
+  color: #637282;
+}
+body.app-ready .loading-guard { display: none; }
+
 button, input, select, textarea {
   font: inherit;
 }
@@ -152,7 +168,24 @@ code {
 
 .button-row {
   display: flex;
+  align-items: center;
   gap: 8px;
+}
+
+.jump-label {
+  font-size: 13px;
+  color: #637282;
+  white-space: nowrap;
+}
+
+.jump-input {
+  width: 70px;
+  padding: 6px 8px;
+  border: 1px solid #d3dbe3;
+  border-radius: 6px;
+  font-size: 13px;
+  text-align: center;
+}
   flex-wrap: wrap;
 }
 
