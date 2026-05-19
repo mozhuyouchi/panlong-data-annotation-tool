@@ -55,7 +55,29 @@ function ensureCurrentAttempt() {
     upsertTemplateFromAttempt(task.bookId, getUnitPageKey(unit), unit.copyId, attempt);
   }
 
+  dedupQuestionIds(attempt);
   return attempt;
+}
+
+function dedupQuestionIds(attempt) {
+  var seen = {};
+  var fixed = false;
+  var maxOrder = 0;
+  attempt.questions.forEach(function (q) { if (q.order > maxOrder) maxOrder = q.order; });
+  attempt.questions.forEach(function (q, idx) {
+    if (seen[q.questionId]) {
+      maxOrder += 1;
+      var oldId = q.questionId;
+      q.questionId = q.questionId.replace(/__q\d+$/, '__q' + String(maxOrder).padStart(2, '0'));
+      q.order = maxOrder;
+      console.warn('[dedup] fixed duplicate questionId:', oldId, '->', q.questionId);
+      fixed = true;
+    }
+    seen[q.questionId] = true;
+  });
+  if (fixed) {
+    autoSaveWorkbench();
+  }
 }
 
 function createBlankAttempt(task, unit) {

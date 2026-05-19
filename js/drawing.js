@@ -7,9 +7,13 @@ function startNewQuestionFlow(silent = false) {
     if (!silent) alert('请先确保当前页图片已成功加载。');
     return;
   }
+  var existingQuestions = getCurrentAttempt().questions;
+  var maxOrder = 0;
+  existingQuestions.forEach(function (q) { if (q.order > maxOrder) maxOrder = q.order; });
+  var nextOrder = Math.max(existingQuestions.length + 1, maxOrder + 1);
   state.pendingQuestion = {
-    questionId: buildQuestionId(getCurrentTask().bookId, getUnitPageKey(getCurrentUnit()), getCurrentAttempt().questions.length + 1),
-    order: getCurrentAttempt().questions.length + 1,
+    questionId: buildQuestionId(getCurrentTask().bookId, getUnitPageKey(getCurrentUnit()), nextOrder),
+    order: nextOrder,
     type: state.currentType,
     stem: null,
     answer: null,
@@ -140,11 +144,15 @@ function handleDrawEnd(event) {
     state.pendingSubQuestionParentId = null;
     setDrawingPhase(null);
   } else if (state.drawingPhase === 'attempt_answer') {
-    const question = getCurrentAttempt().questions.find(item => item.questionId === state.pendingAnswerTarget.questionId);
+    var targetId = state.pendingAnswerTarget.questionId;
+    console.log('[draw] attempt_answer target:', targetId, 'available:', getCurrentAttempt().questions.map(function(q){return q.questionId;}));
+    const question = getCurrentAttempt().questions.find(item => item.questionId === targetId);
     if (question) {
       question.answer = { display: regionDisplay, bbox: regionBbox };
       selectQuestion(question.questionId);
       touchCurrentAttempt();
+    } else {
+      console.warn('[draw] question not found for targetId:', targetId);
     }
     state.pendingAnswerTarget = null;
     setDrawingPhase(null);
