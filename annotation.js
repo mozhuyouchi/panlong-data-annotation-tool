@@ -202,6 +202,7 @@ function handleConfigImport(event) {
       validateProjectConfig(parsed);
       state.project = parsed;
       localStorage.setItem(STORAGE_KEYS.projectConfig, JSON.stringify(parsed));
+      state.workbench.dirtyConfig = true;
       state.activeTaskId = '';
       state.annotatorId = '';
       renderProjectSummary();

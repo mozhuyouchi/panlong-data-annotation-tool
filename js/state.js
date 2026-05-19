@@ -74,7 +74,9 @@ const state = {
   workbench: {
     templates: {},
     attempts: {},
-    taskCursor: {}
+    taskCursor: {},
+    dirtyAttempts: {},
+    dirtyTemplates: {}
   },
   currentType: 'single',
   selectedQuestionId: null,

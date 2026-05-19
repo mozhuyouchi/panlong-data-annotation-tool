@@ -181,7 +181,10 @@ function upsertTemplateFromAttempt(bookId, pageKey, sourceCopyId, attempt) {
       }))
     }))
   };
+  state.workbench.dirtyTemplates[buildTemplateKey(bookId, pageKey)] = true;
   autoSaveWorkbench();
+  clearTimeout(serverSyncTimeout);
+  syncWorkbenchToServer();
 }
 
 function buildTaskUnits(task) {
@@ -232,6 +235,7 @@ function getCurrentBookPage() {
 
 function persistProjectConfig() {
   localStorage.setItem(STORAGE_KEYS.projectConfig, JSON.stringify(state.project));
+  state.workbench.dirtyConfig = true;
 }
 
 function clearAttemptForUnit(task, unit) {
@@ -315,6 +319,9 @@ function touchCurrentAttempt() {
   attempt.pageStatus = attempt.pageStatus === 'not_started' ? 'in_progress' : attempt.pageStatus;
   const task = getCurrentTask();
   const unit = getCurrentUnit();
+  var key = buildAttemptKey(task.bookId, task.id, unit.copyId, getUnitPageKey(unit));
+  state.workbench.dirtyAttempts = state.workbench.dirtyAttempts || {};
+  state.workbench.dirtyAttempts[key] = true;
   if (isTemplateMode() && attempt.questions.length && !attempt.detachedFromTemplate) {
     upsertTemplateFromAttempt(task.bookId, getUnitPageKey(unit), unit.copyId, attempt);
   } else {
@@ -348,13 +355,33 @@ function scheduleServerSync() {
 
 async function syncWorkbenchToServer() {
   if (!apiClient.enabled) return;
-  var pushed = await apiClient.push({
-    projectConfig: state.project,
-    templates: state.workbench.templates,
-    attempts: state.workbench.attempts,
-    cursors: state.workbench.taskCursor,
+
+  state.workbench.dirtyAttempts = state.workbench.dirtyAttempts || {};
+  state.workbench.dirtyTemplates = state.workbench.dirtyTemplates || {};
+
+  var dirtyAttempts = {};
+  Object.keys(state.workbench.dirtyAttempts).forEach(function (k) {
+    if (state.workbench.attempts[k]) dirtyAttempts[k] = state.workbench.attempts[k];
   });
+  var dirtyTemplates = {};
+  Object.keys(state.workbench.dirtyTemplates).forEach(function (k) {
+    if (state.workbench.templates[k]) dirtyTemplates[k] = state.workbench.templates[k];
+  });
+
+  var payload = {
+    templates: dirtyTemplates,
+    attempts: dirtyAttempts,
+    cursors: state.workbench.taskCursor,
+  };
+  if (state.workbench.dirtyConfig) {
+    payload.projectConfig = state.project;
+  }
+
+  var pushed = await apiClient.push(payload);
   if (pushed) {
+    state.workbench.dirtyAttempts = {};
+    state.workbench.dirtyTemplates = {};
+    state.workbench.dirtyConfig = false;
     setSaveIndicator('已保存 已同步 ' + new Date().toLocaleTimeString());
   }
 }
