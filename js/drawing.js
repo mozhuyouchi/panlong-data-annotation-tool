@@ -53,6 +53,54 @@ function startTemplateSubQuestionDraw(questionId) {
   setDrawingPhase('sub_template_stem');
 }
 
+function startFillSubAnswerDraw(questionId) {
+  if (!isTemplateMode()) {
+    var attempt = getCurrentAttempt();
+    var question = attempt.questions.find(function (q) { return q.questionId === questionId; });
+    if (!question) return;
+    question.subQuestions = question.subQuestions || [];
+    var subIndex = question.subQuestions.length + 1;
+    var subId = questionId + '__a' + String(subIndex).padStart(2, '0');
+    question.subQuestions.push({
+      subQuestionId: subId,
+      order: subIndex,
+      stem: null,
+      answer: null,
+      status: null,
+      totalScore: '',
+      studentScore: '',
+      note: '',
+      answer_key: '',
+      answer_key_images: [],
+      student_answer: '',
+      student_answer_images: []
+    });
+    state.pendingAnswerTarget = { questionId: questionId, subQuestionId: subId };
+    state.pendingFillSubAnswer = true;
+    setDrawingPhase('attempt_sub_answer');
+    return;
+  }
+  if (!isCurrentImageReady()) {
+    alert('请先确保当前页图片已成功加载。');
+    return;
+  }
+  var attempt = getCurrentAttempt();
+  var question = attempt.questions.find(function (q) { return q.questionId === questionId; });
+  if (!question) return;
+  question.subQuestions = question.subQuestions || [];
+  var subIndex = question.subQuestions.length + 1;
+  var subId = questionId + '__a' + String(subIndex).padStart(2, '0');
+  question.subQuestions.push({
+    subQuestionId: subId,
+    order: subIndex,
+    stem: null,
+    answer: null
+  });
+  state.pendingAnswerTarget = { questionId: questionId, subQuestionId: subId };
+  state.pendingFillSubAnswer = true;
+  setDrawingPhase('attempt_sub_answer');
+}
+
 function startAttemptAnswerDraw(questionId) {
   if (isTemplateMode()) return;
   state.pendingAnswerTarget = { questionId, subQuestionId: null };

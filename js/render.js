@@ -248,6 +248,8 @@ function renderCurrentImage(source) {
     elements.imageContainer.classList.add('hidden');
     elements.currentFilename.textContent = '未找到';
     elements.infoSize.textContent = '-';
+    elements.mainImage.onload = null;
+    elements.mainImage.onerror = null;
     elements.mainImage.removeAttribute('src');
     applyImageZoomStyle();
     return;
@@ -265,10 +267,24 @@ function renderCurrentImage(source) {
     applyImageZoomStyle();
     if (!isUrl) URL.revokeObjectURL(src);
   };
-  elements.mainImage.src = src;
+  elements.mainImage.onerror = function() {
+    elements.imagePlaceholder.classList.remove('hidden');
+    elements.imageContainer.classList.add('hidden');
+    elements.infoSize.textContent = '鍔犺浇澶辫触';
+    applyImageZoomStyle();
+    if (!isUrl) URL.revokeObjectURL(src);
+  };
   elements.currentFilename.textContent = isUrl ? source.split('/').pop() : source.name;
   elements.imagePlaceholder.classList.add('hidden');
   elements.imageContainer.classList.remove('hidden');
+  elements.mainImage.src = src;
+  if (elements.mainImage.complete) {
+    if (elements.mainImage.naturalWidth > 0) {
+      elements.mainImage.onload();
+    } else {
+      elements.mainImage.onerror();
+    }
+  }
 }
 
 function renderAnnotationsList() {
@@ -359,21 +375,9 @@ function renderAnnotationsList() {
     }
 
     renderQuestionStatusSection(item, question, index);
-    renderScoreSection(item, question);
     renderTemplateAnswerSection(item, question);
     renderStudentAnswerSection(item, question);
     renderSubQuestionsSection(item, question);
-
-    const noteInput = document.createElement('textarea');
-    noteInput.className = 'note-input';
-    noteInput.placeholder = '备注（可选）...';
-    noteInput.value = question.note || '';
-    noteInput.addEventListener('click', e => e.stopPropagation());
-    noteInput.addEventListener('input', function() {
-      question.note = this.value;
-      touchCurrentAttempt();
-    });
-    item.appendChild(noteInput);
 
     item.addEventListener('click', () => selectQuestion(question.questionId));
     list.appendChild(item);
@@ -471,7 +475,8 @@ function renderStudentAnswerSection(container, question) {
 }
 
 function renderSubQuestionsSection(container, question) {
-  if (question.type !== 'qa') return;
+  if (question.type !== 'qa' && question.type !== 'fill') return;
+  var isFill = question.type === 'fill';
 
   const subArea = document.createElement('div');
   subArea.className = 'sub-question-area';
@@ -479,7 +484,7 @@ function renderSubQuestionsSection(container, question) {
   if (!question.subQuestions || question.subQuestions.length === 0) {
     const empty = document.createElement('div');
     empty.className = 'muted';
-    empty.textContent = isTemplateMode() ? '当前问答题还没有子题。' : '当前模板没有子题。';
+    empty.textContent = isFill ? '当前填空题还没有作答区。' : (isTemplateMode() ? '当前问答题还没有子题。' : '当前模板没有子题。');
     subArea.appendChild(empty);
     container.appendChild(subArea);
     return;
@@ -490,7 +495,7 @@ function renderSubQuestionsSection(container, question) {
     subItem.className = 'sub-question-item';
     const head = document.createElement('div');
     head.className = 'sub-question-head';
-    head.innerHTML = `<strong>子题 ${subIndex + 1}</strong>`;
+    head.innerHTML = isFill ? `<strong>作答框 ${subIndex + 1}</strong>` : `<strong>子题 ${subIndex + 1}</strong>`;
 
     const info = document.createElement('span');
     info.className = 'muted';
@@ -556,78 +561,41 @@ function renderSubQuestionsSection(container, question) {
     statusWrap.appendChild(statusBtns);
     subItem.appendChild(statusWrap);
 
-    const scoreGrid = document.createElement('div');
-    scoreGrid.className = 'info-grid';
-    scoreGrid.innerHTML = `
-      <div>
-        <div class="status-label">学生得分</div>
-        <input class="compact-input" type="number" min="0" value="${escapeHtml(subQuestion.studentScore || '')}" placeholder="得分">
-      </div>
-      <div>
-        <div class="status-label">题目总分</div>
-        <input class="compact-input" type="number" min="0" value="${escapeHtml(subQuestion.totalScore || '')}" placeholder="总分">
-      </div>
-    `;
-    const scoreInputs = scoreGrid.querySelectorAll('input');
-    scoreInputs.forEach(input => {
-      input.type = 'number';
-      input.step = 'any';
-      input.min = '0';
-      input.addEventListener('click', e => e.stopPropagation());
-      input.addEventListener('mousedown', e => e.stopPropagation());
-    });
-    scoreInputs[0].addEventListener('input', function() {
-      subQuestion.studentScore = this.value;
-      touchCurrentAttempt();
-    });
-    scoreInputs[1].addEventListener('input', function() {
-      subQuestion.totalScore = this.value;
-      touchCurrentAttempt();
-    });
-    subItem.appendChild(scoreGrid);
 
-    const standardAnswerArea = document.createElement('div');
-    standardAnswerArea.style.marginTop = '8px';
-    const standardLabel = document.createElement('div');
-    standardLabel.className = 'status-label';
-    standardLabel.textContent = '子题标准答案';
-    standardAnswerArea.appendChild(standardLabel);
-    buildTextAndImageAnswerEditor(
-      standardAnswerArea,
-      subQuestion,
-      'answer_key',
-      'answer_key_images',
-      '输入子题标准答案文字...',
-      true
-    );
-    attachAnswerKeySync(standardAnswerArea, subQuestion);
-    subItem.appendChild(standardAnswerArea);
+    if (!isFill) {
+      const standardAnswerArea = document.createElement('div');
+      standardAnswerArea.style.marginTop = '8px';
+      const standardLabel = document.createElement('div');
+      standardLabel.className = 'status-label';
+      standardLabel.textContent = '子题标准答案';
+      standardAnswerArea.appendChild(standardLabel);
+      buildTextAndImageAnswerEditor(
+        standardAnswerArea,
+        subQuestion,
+        'answer_key',
+        'answer_key_images',
+        '输入子题标准答案文字...',
+        true
+      );
+      attachAnswerKeySync(standardAnswerArea, subQuestion);
+      subItem.appendChild(standardAnswerArea);
 
-    const studentAnswerArea = document.createElement('div');
-    studentAnswerArea.style.marginTop = '8px';
-    const studentLabel = document.createElement('div');
-    studentLabel.className = 'status-label';
-    studentLabel.textContent = '子题学生答案';
-    studentAnswerArea.appendChild(studentLabel);
-    buildTextAndImageAnswerEditor(
-      studentAnswerArea,
-      subQuestion,
-      'student_answer',
-      'student_answer_images',
-      '输入子题学生答案文字...',
-      true
-    );
-    subItem.appendChild(studentAnswerArea);
-
-    const note = document.createElement('textarea');
-    note.className = 'note-input';
-    note.placeholder = '子题备注...';
-    note.value = subQuestion.note || '';
-    note.addEventListener('input', function() {
-      subQuestion.note = this.value;
-      touchCurrentAttempt();
-    });
-    subItem.appendChild(note);
+      const studentAnswerArea = document.createElement('div');
+      studentAnswerArea.style.marginTop = '8px';
+      const studentLabel = document.createElement('div');
+      studentLabel.className = 'status-label';
+      studentLabel.textContent = '子题学生答案';
+      studentAnswerArea.appendChild(studentLabel);
+      buildTextAndImageAnswerEditor(
+        studentAnswerArea,
+        subQuestion,
+        'student_answer',
+        'student_answer_images',
+        '输入子题学生答案文字...',
+        true
+      );
+      subItem.appendChild(studentAnswerArea);
+    }
 
     subArea.appendChild(subItem);
   });
@@ -653,20 +621,26 @@ function renderAnnotationBoxes() {
       if (region) drawAnnotationBox(region, cfg.colorClass, cfg.borderColor, stemLabel, false, question.questionId, question.questionId === state.selectedQuestionId);
     }
     if (question.answer?.bbox) {
-      const region = imageToDisplayRegion(question.answer.bbox);
+      const ansBbox = question.fromTemplate ? applyOffsetToBbox(question.answer.bbox, offset) : question.answer.bbox;
+      const region = imageToDisplayRegion(ansBbox);
       if (region) drawAnnotationBox(region, cfg.colorClass, cfg.borderColor, `#${index + 1} 作答`, true, question.questionId, question.questionId === state.selectedQuestionId);
     }
     if (question.subQuestions) {
+      var isFill = question.type === 'fill';
       question.subQuestions.forEach((subQuestion, subIndex) => {
         const subColor = '#19837b';
         if (subQuestion.stem?.bbox) {
           const bbox = question.fromTemplate ? applyOffsetToBbox(subQuestion.stem.bbox, offset) : subQuestion.stem.bbox;
           const region = imageToDisplayRegion(bbox);
-          if (region) drawAnnotationBox(region, cfg.colorClass, subColor, `#${index + 1}-${subIndex + 1} 子题题干`, false, question.questionId, question.questionId === state.selectedQuestionId);
+          var subSelected = subQuestion.subQuestionId === state.selectedQuestionId || question.questionId === state.selectedQuestionId;
+          if (region) drawAnnotationBox(region, cfg.colorClass, subColor, `#${index + 1}-${subIndex + 1} 子题题干`, false, subQuestion.subQuestionId, subSelected);
         }
         if (subQuestion.answer?.bbox) {
-          const region = imageToDisplayRegion(subQuestion.answer.bbox);
-          if (region) drawAnnotationBox(region, cfg.colorClass, subColor, `#${index + 1}-${subIndex + 1} 作答`, true, question.questionId, question.questionId === state.selectedQuestionId);
+          const subAnsBbox = question.fromTemplate ? applyOffsetToBbox(subQuestion.answer.bbox, offset) : subQuestion.answer.bbox;
+          const region = imageToDisplayRegion(subAnsBbox);
+          var ansLabel = isFill ? `作答框${subIndex + 1}` : `#${index + 1}-${subIndex + 1} 作答`;
+          var subSelected2 = subQuestion.subQuestionId === state.selectedQuestionId || question.questionId === state.selectedQuestionId;
+          if (region) drawAnnotationBox(region, cfg.colorClass, subColor, ansLabel, true, subQuestion.subQuestionId, subSelected2);
         }
       });
     }
@@ -689,18 +663,164 @@ function drawAnnotationBox(region, colorClass, borderColor, labelText, isAnswer,
   box.style.opacity = isSelected ? '1' : '0.45';
   box.style.zIndex = isSelected ? '10' : '1';
 
-  const label = document.createElement('div');
+  var label = document.createElement('div');
   label.className = 'box-label';
   label.style.background = borderColor;
   label.textContent = labelText;
   box.appendChild(label);
 
-  box.addEventListener('click', e => {
+  box.dataset.section = isAnswer ? 'answer' : 'stem';
+  if (isSelected) box.classList.add('selected');
+  addDragResizeToBox(box, questionId, region);
+
+  box.addEventListener('click', function (e) {
     e.stopPropagation();
     selectQuestion(questionId);
   });
 
   elements.imageContainer.appendChild(box);
+}
+
+var dragState = null;
+
+function addDragResizeToBox(box, questionId, region) {
+  box.addEventListener('mousedown', function (e) {
+    if (state.drawingPhase) return;
+    if (e.target === box || e.target.className === 'box-label') {
+      e.stopPropagation();
+      e.preventDefault();
+      var rect = box.getBoundingClientRect();
+      var containerRect = elements.imageContainer.getBoundingClientRect();
+      dragState = {
+        type: 'move',
+        questionId: questionId,
+        box: box,
+        startX: e.clientX,
+        startY: e.clientY,
+        origLeft: box.offsetLeft,
+        origTop: box.offsetTop,
+        origW: box.offsetWidth,
+        origH: box.offsetHeight,
+        containerLeft: containerRect.left,
+        containerTop: containerRect.top,
+      };
+    }
+  });
+
+  var handles = ['nw', 'ne', 'sw', 'se'];
+  handles.forEach(function (pos) {
+    var h = document.createElement('div');
+    h.className = 'resize-handle resize-' + pos;
+    h.addEventListener('mousedown', function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      var containerRect = elements.imageContainer.getBoundingClientRect();
+      dragState = {
+        type: 'resize',
+        questionId: questionId,
+        box: box,
+        handle: pos,
+        startX: e.clientX,
+        startY: e.clientY,
+        origLeft: box.offsetLeft,
+        origTop: box.offsetTop,
+        origW: box.offsetWidth,
+        origH: box.offsetHeight,
+        containerLeft: containerRect.left,
+        containerTop: containerRect.top,
+      };
+    });
+    box.appendChild(h);
+  });
+}
+
+document.addEventListener('mousemove', function (e) {
+  if (!dragState) return;
+  var dx = e.clientX - dragState.startX;
+  var dy = e.clientY - dragState.startY;
+
+  if (dragState.type === 'move') {
+    dragState.box.style.left = (dragState.origLeft + dx) + 'px';
+    dragState.box.style.top = (dragState.origTop + dy) + 'px';
+  } else if (dragState.type === 'resize') {
+    var minW = 20, minH = 20;
+    var newLeft = dragState.origLeft;
+    var newTop = dragState.origTop;
+    var newW = dragState.origW;
+    var newH = dragState.origH;
+
+    if (dragState.handle.indexOf('e') >= 0) {
+      newW = Math.max(minW, dragState.origW + dx);
+    }
+    if (dragState.handle.indexOf('w') >= 0) {
+      var w2 = Math.max(minW, dragState.origW - dx);
+      newLeft = dragState.origLeft + (dragState.origW - w2);
+      newW = w2;
+    }
+    if (dragState.handle.indexOf('s') >= 0) {
+      newH = Math.max(minH, dragState.origH + dy);
+    }
+    if (dragState.handle.indexOf('n') >= 0) {
+      var h2 = Math.max(minH, dragState.origH - dy);
+      newTop = dragState.origTop + (dragState.origH - h2);
+      newH = h2;
+    }
+
+    dragState.box.style.left = newLeft + 'px';
+    dragState.box.style.top = newTop + 'px';
+    dragState.box.style.width = newW + 'px';
+    dragState.box.style.height = newH + 'px';
+  }
+});
+
+document.addEventListener('mouseup', function () {
+  if (!dragState) return;
+  var box = dragState.box;
+  var questionId = dragState.questionId;
+  var newLeft = box.offsetLeft;
+  var newTop = box.offsetTop;
+  var newW = box.offsetWidth;
+  var newH = box.offsetHeight;
+  dragState = null;
+
+  var attempt = getCurrentAttempt();
+  if (!attempt) return;
+
+  updateDisplaySize();
+  var newDisplay = { x: newLeft, y: newTop, w: newW, h: newH };
+  var newBbox = displayToImageBbox(newDisplay);
+
+  var section = box.dataset.section || 'stem';
+  var offset = attempt.templateOffset || { x: 0, y: 0 };
+  var found = findQuestionAndUpdate(attempt, questionId, section, newDisplay, newBbox, offset);
+  if (found) {
+    touchCurrentAttempt();
+    renderAnnotationsList();
+  }
+});
+
+function findQuestionAndUpdate(attempt, questionId, section, newDisplay, newBbox, offset) {
+  function updateField(target) {
+    if (section === 'stem' && target.stem) {
+      target.stem.display = newDisplay;
+      target.stem.bbox = newBbox;
+      return true;
+    }
+    if (section === 'answer') {
+      target.answer = { display: newDisplay, bbox: newBbox };
+      return true;
+    }
+    return false;
+  }
+  var q = attempt.questions.find(function (item) { return item.questionId === questionId; });
+  if (q && updateField(q)) return true;
+  for (var i = 0; i < attempt.questions.length; i++) {
+    var subQs = attempt.questions[i].subQuestions || [];
+    for (var j = 0; j < subQs.length; j++) {
+      if (subQs[j].subQuestionId === questionId && updateField(subQs[j])) return true;
+    }
+  }
+  return false;
 }
 
 function renderPendingTemplateBoxes() {

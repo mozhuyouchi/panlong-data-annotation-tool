@@ -15,9 +15,9 @@ const PAGE_STATUSES = [
 ];
 
 const typeConfig = {
-  single:   { label: '单选题', colorClass: 'color-single', borderColor: '#1665a8', statuses: ['correct', 'wrong'] },
-  multiple: { label: '多选题', colorClass: 'color-multiple', borderColor: '#9447b8', statuses: ['correct', 'wrong', 'partial'] },
-  fill:     { label: '填空题', colorClass: 'color-fill', borderColor: '#d98b22', statuses: ['correct', 'wrong', 'partial'] },
+  single:   { label: '单选题', colorClass: 'color-single', borderColor: '#1665a8', statuses: ['correct', 'wrong', 'partial', 'blank'] },
+  multiple: { label: '多选题', colorClass: 'color-multiple', borderColor: '#9447b8', statuses: ['correct', 'wrong', 'partial', 'blank'] },
+  fill:     { label: '填空题', colorClass: 'color-fill', borderColor: '#d98b22', statuses: ['correct', 'wrong', 'partial', 'blank'] },
   qa:       { label: '问答题', colorClass: 'color-qa', borderColor: '#19837b', statuses: ['correct', 'wrong', 'partial', 'blank'] }
 };
 

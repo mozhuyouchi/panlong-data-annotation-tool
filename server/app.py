@@ -62,11 +62,7 @@ def health():
 @app.route('/api/data', methods=['GET'])
 def get_data():
     db = get_db()
-    result = {'project_config': None, 'templates': {}, 'attempts': {}, 'cursors': None}
-
-    row = db.execute("SELECT value_json FROM meta WHERE key='project_config'").fetchone()
-    if row:
-        result['project_config'] = json.loads(row['value_json'])
+    result = {'templates': {}, 'attempts': {}, 'cursors': None}
 
     row = db.execute("SELECT value_json FROM meta WHERE key='cursors'").fetchone()
     if row:
@@ -86,12 +82,6 @@ def put_data():
     db = get_db()
     body = request.get_json(force=True)
     now = datetime.now(timezone.utc).isoformat()
-
-    if body.get('project_config') is not None:
-        db.execute(
-            "INSERT OR REPLACE INTO meta (key, value_json, updated_at) VALUES ('project_config', ?, ?)",
-            (json.dumps(body['project_config'], ensure_ascii=False), now),
-        )
 
     if body.get('cursors') is not None:
         db.execute(

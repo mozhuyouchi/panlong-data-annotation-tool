@@ -90,6 +90,26 @@
         <div class="empty-hint">先选择标注员，然后这里会显示分配给他的任务。</div>
       </div>
     </section>
+
+    <section class="panel-block" id="page-map-section">
+      <div class="panel-heading">
+        <h2>页码对齐</h2>
+      </div>
+      <div class="stack">
+        <div class="info-card compact">
+          <div>逻辑页：<strong id="page-map-logical">-</strong></div>
+          <div>当前副本：<strong id="page-map-copy">-</strong></div>
+          <div>当前扫描图：<strong id="page-map-image">-</strong></div>
+        </div>
+        <label class="field-label" for="page-map-input">当前扫描图实际对应逻辑页</label>
+        <input class="compact-input" id="page-map-input" type="number" min="1" step="1" placeholder="例如 6">
+        <div class="button-row page-map-actions">
+          <button class="btn btn-secondary" id="apply-page-map-btn" type="button">确认并重排后续页</button>
+          <button class="btn btn-danger btn-quiet-danger" id="skip-logical-page-btn" type="button">当前扫描图无效</button>
+        </div>
+        <p class="micro-copy">缺失会把当前图顺延给下一页；无效会跳过当前扫描图。</p>
+      </div>
+    </section>
     </div>
   </aside>
 
@@ -115,7 +135,7 @@
         <button class="btn btn-secondary" id="jump-page-btn" type="button">跳转</button>
         <button class="btn btn-secondary" id="prev-unit-btn" type="button">上一个单元</button>
         <button class="btn btn-secondary" id="next-unit-btn" type="button">下一个单元</button>
-        <button class="btn btn-success" id="mark-complete-btn" type="button">标记本页完成</button>
+        <button class="btn btn-success hidden" id="mark-complete-btn" type="button">标记本页完成</button>
       </div>
     </div>
 
@@ -175,22 +195,6 @@
         </section>
         <div class="detail-scroll">
           <div class="panel-zoom-content" id="detail-content">
-        <section class="detail-section" id="page-map-section">
-          <h3>页码对齐</h3>
-          <div class="info-card compact">
-            <div>逻辑页：<strong id="page-map-logical">-</strong></div>
-            <div>当前副本：<strong id="page-map-copy">-</strong></div>
-            <div>当前扫描图：<strong id="page-map-image">-</strong></div>
-          </div>
-          <label class="field-label" for="page-map-input">当前扫描图实际对应逻辑页</label>
-          <input class="compact-input" id="page-map-input" type="number" min="1" step="1" placeholder="例如 6">
-          <div class="button-row page-map-actions">
-            <button class="btn btn-secondary" id="apply-page-map-btn" type="button">确认并重排后续页</button>
-            <button class="btn btn-danger btn-quiet-danger" id="skip-logical-page-btn" type="button">当前扫描图无效</button>
-          </div>
-          <p class="micro-copy">缺失会把当前图顺延给下一页；无效会跳过当前扫描图。</p>
-        </section>
-
         <section class="detail-section">
           <h3>页状态</h3>
           <div class="status-btns" id="page-status-buttons"></div>
@@ -207,6 +211,7 @@
           <h3>导出结果</h3>
           <div class="button-row">
             <button class="btn btn-success" id="export-task-json-btn" type="button">导出任务 JSON</button>
+            <button class="btn btn-secondary" id="export-config-json-btn" type="button">导出修正后配置</button>
           </div>
         </section>
           </div>

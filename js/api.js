@@ -34,7 +34,6 @@ const apiClient = {
     if (!this.enabled) return false;
     try {
       const payload = {};
-      if (changes.projectConfig !== undefined) payload.project_config = changes.projectConfig;
       if (changes.templates !== undefined) payload.templates = changes.templates;
       if (changes.attempts !== undefined) payload.attempts = changes.attempts;
       if (changes.cursors !== undefined) payload.cursors = changes.cursors;

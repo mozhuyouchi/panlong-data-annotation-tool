@@ -149,28 +149,28 @@ function cloneTemplateQuestionToAttempt(question) {
     order: question.order,
     type: question.type,
     stem: deepClone(question.stem),
-    answer: null,
-    status: null,
+    answer: deepClone(question.answer),
+    status: 'correct',
     totalScore: question.totalScore || '',
     studentScore: '',
     note: '',
     answer_key: question.answer_key || '',
     answer_key_images: deepClone(question.answer_key_images || []),
-    student_answer: '',
-    student_answer_images: [],
+    student_answer: question.answer_key || '',
+    student_answer_images: deepClone(question.answer_key_images || []),
     subQuestions: question.subQuestions ? question.subQuestions.map(subQuestion => ({
       subQuestionId: subQuestion.subQuestionId,
       order: subQuestion.order,
       stem: deepClone(subQuestion.stem),
-      answer: null,
-      status: null,
+      answer: deepClone(subQuestion.answer),
+      status: 'correct',
       totalScore: subQuestion.totalScore || '',
       studentScore: '',
       note: '',
       answer_key: subQuestion.answer_key || '',
       answer_key_images: deepClone(subQuestion.answer_key_images || []),
-      student_answer: '',
-      student_answer_images: []
+      student_answer: subQuestion.answer_key || '',
+      student_answer_images: deepClone(subQuestion.answer_key_images || [])
     })) : [],
     fromTemplate: true
   };
@@ -190,6 +190,7 @@ function upsertTemplateFromAttempt(bookId, pageKey, sourceCopyId, attempt) {
       order: question.order,
       type: question.type,
       stem: deepClone(question.stem),
+      answer: deepClone(question.answer),
       totalScore: question.totalScore || '',
       answer_key: question.answer_key || '',
       answer_key_images: deepClone(question.answer_key_images || []),
@@ -197,6 +198,7 @@ function upsertTemplateFromAttempt(bookId, pageKey, sourceCopyId, attempt) {
         subQuestionId: subQuestion.subQuestionId,
         order: subQuestion.order,
         stem: deepClone(subQuestion.stem),
+        answer: deepClone(subQuestion.answer),
         totalScore: subQuestion.totalScore || '',
         answer_key: subQuestion.answer_key || '',
         answer_key_images: deepClone(subQuestion.answer_key_images || [])
@@ -257,7 +259,6 @@ function getCurrentBookPage() {
 
 function persistProjectConfig() {
   localStorage.setItem(STORAGE_KEYS.projectConfig, JSON.stringify(state.project));
-  state.workbench.dirtyConfig = true;
 }
 
 function clearAttemptForUnit(task, unit) {
@@ -302,10 +303,12 @@ function comparePageFileNames(a, b) {
 }
 
 function remapCopyFromPage(book, copyId, startPageIndex, firstScanIndex, scanFiles) {
+  var now = new Date().toISOString();
   for (let index = startPageIndex; index < book.pages.length; index += 1) {
     const scanIndex = firstScanIndex + (index - startPageIndex);
     book.pages[index].images = book.pages[index].images || {};
     book.pages[index].images[copyId] = scanFiles[scanIndex] || null;
+    book.pages[index].updatedAt = now;
   }
 }
 
@@ -395,9 +398,6 @@ async function syncWorkbenchToServer() {
     attempts: dirtyAttempts,
     cursors: state.workbench.taskCursor,
   };
-  if (state.workbench.dirtyConfig) {
-    payload.projectConfig = state.project;
-  }
 
   var pushed = await apiClient.push(payload);
   if (pushed) {
@@ -557,55 +557,6 @@ function buildTextAndImageAnswerEditor(container, target, keyField, imageField, 
     });
   }
 
-  const uploadLabel = document.createElement('label');
-  uploadLabel.className = 'mini-btn';
-  uploadLabel.textContent = editable ? '上传图片' : '标准答案图片';
-  if (!editable) uploadLabel.style.cursor = 'default';
-
-  if (editable) {
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.hidden = true;
-    fileInput.addEventListener('change', event => {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(loadEvent) {
-        target[imageField].push(loadEvent.target.result);
-        touchCurrentAttempt();
-        renderAnnotationsList();
-      };
-      reader.readAsDataURL(file);
-      event.target.value = '';
-    });
-    uploadLabel.appendChild(fileInput);
-  }
-  container.appendChild(uploadLabel);
-
-  const thumbRow = document.createElement('div');
-  thumbRow.className = 'thumb-row';
-  (target[imageField] || []).forEach((src, index) => {
-    const wrap = document.createElement('div');
-    wrap.className = 'thumb-wrap';
-    const img = document.createElement('img');
-    img.src = src;
-    img.addEventListener('click', () => previewImage(src));
-    wrap.appendChild(img);
-    if (editable) {
-      const delBtn = document.createElement('button');
-      delBtn.type = 'button';
-      delBtn.textContent = '×';
-      delBtn.addEventListener('click', () => {
-        target[imageField].splice(index, 1);
-        touchCurrentAttempt();
-        renderAnnotationsList();
-      });
-      wrap.appendChild(delBtn);
-    }
-    thumbRow.appendChild(wrap);
-  });
-  container.appendChild(thumbRow);
 }
 
 function buildOptionAnswerSelector(container, target, fieldName, allowMultiple, editable) {
@@ -847,6 +798,7 @@ function padPage(pageNo, digits = 4) {
 }
 
 function deepClone(value) {
+  if (value == null) return value;
   return JSON.parse(JSON.stringify(value));
 }
 

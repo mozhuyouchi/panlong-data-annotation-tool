@@ -24,15 +24,16 @@ async function init() {
   applyImageZoomStyle();
   setActiveRegion(state.activeRegionId);
 
-  document.body.classList.add('app-ready');
+  revealWhenReady();
+}
+
+function revealWhenReady() {
+  requestAnimationFrame(function () {
+    document.body.classList.add('app-ready');
+  });
 }
 
 function mergeServerData(serverData) {
-  if (serverData.project_config) {
-    state.project = serverData.project_config;
-    localStorage.setItem(STORAGE_KEYS.projectConfig, JSON.stringify(serverData.project_config));
-  }
-
   if (serverData.templates) {
     Object.entries(serverData.templates).forEach(([key, serverTmpl]) => {
       const localTmpl = state.workbench.templates[key];
@@ -112,6 +113,7 @@ function cacheElements() {
   elements.exportTaskJsonBtn = document.getElementById('export-task-json-btn');
   elements.applyPageMapBtn = document.getElementById('apply-page-map-btn');
   elements.skipLogicalPageBtn = document.getElementById('skip-logical-page-btn');
+  elements.exportConfigJsonBtn = document.getElementById('export-config-json-btn');
   elements.jumpPageInput = document.getElementById('jump-page-input');
   elements.jumpPageBtn = document.getElementById('jump-page-btn');
   elements.questionTypeButtons = Array.from(document.querySelectorAll('#question-type-buttons .type-btn'));
@@ -138,6 +140,13 @@ function bindEvents() {
   });
   elements.prevUnitBtn.addEventListener('click', () => stepTaskUnit(-1));
   elements.nextUnitBtn.addEventListener('click', () => stepTaskUnit(1));
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' && !e.target.closest('input, textarea, select')) {
+      stepTaskUnit(1);
+    } else if (e.key === 'ArrowLeft' && !e.target.closest('input, textarea, select')) {
+      stepTaskUnit(-1);
+    }
+  });
   elements.markCompleteBtn.addEventListener('click', () => {
     const attempt = getCurrentAttempt();
     if (!attempt) return;
@@ -151,6 +160,7 @@ function bindEvents() {
   elements.exportTaskJsonBtn.addEventListener('click', exportTaskJsonPackage);
   elements.applyPageMapBtn.addEventListener('click', handleApplyPageMap);
   elements.skipLogicalPageBtn.addEventListener('click', handleSkipLogicalPage);
+  elements.exportConfigJsonBtn.addEventListener('click', exportCurrentProjectConfig);
   elements.offsetXInput.addEventListener('input', handleOffsetChange);
   elements.offsetYInput.addEventListener('input', handleOffsetChange);
   elements.jumpPageBtn.addEventListener('click', handleJumpPage);
@@ -202,7 +212,6 @@ function handleConfigImport(event) {
       validateProjectConfig(parsed);
       state.project = parsed;
       localStorage.setItem(STORAGE_KEYS.projectConfig, JSON.stringify(parsed));
-      state.workbench.dirtyConfig = true;
       state.activeTaskId = '';
       state.annotatorId = '';
       renderProjectSummary();
@@ -368,9 +377,11 @@ function handleApplyPageMap() {
     return;
   }
 
+  var now = new Date().toISOString();
   for (let index = currentPageIndex; index < actualPageIndex; index += 1) {
     book.pages[index].images = book.pages[index].images || {};
     book.pages[index].images[unit.copyId] = null;
+    book.pages[index].updatedAt = now;
   }
   remapCopyFromPage(book, unit.copyId, actualPageIndex, currentScanIndex, scanFiles);
   persistProjectConfig();
@@ -437,4 +448,9 @@ function handleRedrawCurrentPage() {
   setDrawingPhase(null);
   touchWorkbench();
   renderWorkspace();
+}
+
+function exportCurrentProjectConfig() {
+  var name = (state.project.projectName || 'project-config') + '.修正版.json';
+  downloadTextFile(name, JSON.stringify(state.project, null, 2), 'application/json');
 }
